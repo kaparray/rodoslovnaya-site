@@ -190,7 +190,7 @@ h3{font-size:24px;line-height:1.15}
 .device{background:#151d18;border-radius:40px;padding:12px;box-shadow:var(--shadow-dark);border:1px solid #3a4a40}
 .device .win{border-radius:29px;box-shadow:none}
 .device .wbar{padding:14px 24px}
-@media (min-width:981px){.device .wbody{height:min(620px,max(440px,calc(100vh - 180px)))}.device .ex{overflow:auto}.device .ex[data-more]{-webkit-mask-image:linear-gradient(#000 calc(100% - 64px),transparent);mask-image:linear-gradient(#000 calc(100% - 64px),transparent)}}
+@media (min-width:981px){.device .wbody{height:min(620px,max(440px,calc(100vh - 180px)))}.device .ex{overflow:hidden}.device .ex>*{transform-origin:top center}}
 .wbody{position:relative;display:grid}
 .ex{grid-area:1/1;padding:30px 28px;opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease;pointer-events:none;overflow-x:auto}
 .ex.on{opacity:1;transform:none;pointer-events:auto}
@@ -454,6 +454,12 @@ h3{font-size:24px;line-height:1.15}
 /* первый экран для тех, кто уже искал */
 @media (max-width:560px){.hero-crest{display:none}.hero .lead{font-size:17px}}
 .hero-kick{margin:0 0 14px;font:italic 500 clamp(19px,2vw,24px)/1.2 var(--serif);color:#e2c48f}
+/* первый экран целиком в окне: размеры зависят и от высоты */
+.hero{padding:clamp(36px,7vh,120px) 0 clamp(44px,8vh,128px)}
+.hero h1{font-size:min(clamp(46px,7.4vw,96px),max(38px,9.6vh));max-width:20ch}
+.hero-crest{width:clamp(52px,min(7.5vw,9.5vh),104px);margin:0 auto 12px}
+@media (max-height:820px) and (min-width:561px){.hero .lead{max-width:64ch;font-size:17px;margin-top:14px}.hero .ctas{margin-top:22px}.hero-kick{margin-bottom:8px}.hero .price{margin-top:12px;font-size:15px}}
+@media (max-height:640px) and (min-width:561px){.hero-crest{display:none}}
 /* где заканчиваются бесплатные базы */
 .beyond h2{margin-top:10px}
 .beyond .eyebrow{margin:0;font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--wine)}
@@ -1061,8 +1067,14 @@ document.documentElement.classList.add('js');
     var g=document.getElementById('result'), lis=[].slice.call(g.querySelectorAll('.gl-list li')), exs=[].slice.call(g.querySelectorAll('.ex'));
     var body=document.getElementById('wbody'), fn=document.getElementById('fname'), mq=matchMedia('(min-width:981px)'), mqs=matchMedia('(min-width:981px) and (min-height:700px)'), cur=-1, wide=null;
     // прокрутка внутри примера: мягкое затухание снизу, пока там есть ещё что-то
-    function fade(x){ if(x.scrollHeight>x.clientHeight+4 && x.scrollTop+x.clientHeight<x.scrollHeight-4) x.setAttribute('data-more',''); else x.removeAttribute('data-more'); }
-    exs.forEach(function(x){ x.addEventListener('scroll',function(){ fade(x); },{passive:true}); });
+    // без прокрутки внутри окна: если пример выше окна, уменьшаем его целиком
+    // в таблице сначала прячем последние строки (не меньше 5 видимых), потом при необходимости уменьшаем
+    function fade(x){ var c=x.firstElementChild; if(!c) return; c.style.transform='';
+      var rows=[].slice.call(x.querySelectorAll('tbody tr')); rows.forEach(function(r){ r.style.display=''; }); if(!wide) return;
+      var cs=getComputedStyle(x), av=x.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom), h=c.offsetHeight;
+      for(var n=rows.length-1; h>av+.5 && n>=5; n--){ rows[n].style.display='none'; h=c.offsetHeight; }
+      if(h>av+.5) c.style.transform='scale('+(av/h).toFixed(4)+')'; }
+    if(document.fonts) document.fonts.ready.then(function(){ exs.forEach(fade); });
     function setI(i){ if(i===cur) return; cur=i; lis.forEach(function(l,k){ l.classList.toggle('on',k===i); }); exs.forEach(function(x,k){ x.classList.toggle('on',k===i); x.setAttribute('aria-hidden',k===i?'false':'true'); }); fn.textContent=exs[i].dataset.file; exs.forEach(fade); }
     // широкий экран: список слева и окно справа; липнет и листается прокруткой, только если хватает высоты, иначе переключается нажатием
     function layout(){
@@ -1074,7 +1086,7 @@ document.documentElement.classList.add('js');
         if(w){ body.appendChild(x); var m=lis[k].querySelector('.mwin'); if(m) m.remove(); }
         else { var m=document.createElement('div'); m.className='win mwin'; m.innerHTML='<div class="wbar"><span class="fn">'+x.dataset.file+'</span><span class="fine">пример</span></div>'; m.appendChild(x); lis[k].appendChild(m); x.classList.add('on'); }
       });
-      if(!w){ lis.forEach(function(l){ l.classList.add('on'); }); exs.forEach(function(x){ x.removeAttribute('data-more'); }); cur=-1; } else { cur=-1; tick(); if(cur<0) setI(0); }
+      if(!w){ lis.forEach(function(l){ l.classList.add('on'); }); exs.forEach(fade); cur=-1; } else { cur=-1; tick(); if(cur<0) setI(0); }
     }
     function tick(){ if(!wide) return; if(!g.classList.contains('sticky')){ setI(cur<0?0:cur); return; }
       var r=g.getBoundingClientRect(), total=g.offsetHeight-innerHeight; var t=Math.max(0,Math.min(.999,-r.top/total)); setI(Math.floor(t*exs.length)); }
