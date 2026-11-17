@@ -147,7 +147,8 @@ h3{font-size:24px;line-height:1.15}
 .caps{list-style:none;margin:0;padding:0;display:grid}
 .caps li{grid-area:1/1;font-family:var(--serif);font-weight:600;font-size:clamp(28px,3.4vw,46px);line-height:1.1;letter-spacing:-.01em;color:var(--cream);opacity:0;transform:translateY(18px);transition:opacity .45s ease,transform .45s ease}
 .caps li b{display:block;color:var(--primary-on-dark);font-weight:600}
-.caps li.on{opacity:1;transform:none}
+.caps li.on{opacity:1;transform:none;transition:opacity .4s ease .2s,transform .4s ease .2s}
+.caps li:not(.on){transition-duration:.18s}
 @media (max-width:860px){.caps li{font-size:24px}.caps li b{display:inline}}
 .record.big{transform:translateY(calc((var(--k,1) - 1) * var(--rh,0px) / 2)) scale(calc((.86 + var(--s,0)*.14) * var(--k,1))) rotate(calc(-1.2deg + var(--s,0)*1.2deg));transform-origin:50% 50%;will-change:transform;margin-bottom:calc((var(--k,1) - 1) * var(--rh,0px));transition:transform .4s ease,margin-bottom .5s ease}
 .record.big .ledger .td{font-size:clamp(26px,2.7vw,38px)}
@@ -421,7 +422,7 @@ h3{font-size:24px;line-height:1.15}
 @media (max-width:860px){.tiers{grid-template-columns:minmax(0,1fr)}.tier{padding:28px 24px}}
 .tier{background:var(--canvas);border:1px solid var(--hairline);border-radius:18px;padding:32px 28px;display:flex;flex-direction:column;gap:16px}
 .tier.main{border:2px solid var(--primary)}
-.tier .kick{font:italic 600 17px/1 var(--serif);color:var(--wine);min-height:17px}
+.tier .kick{font:italic 600 20px/1.1 var(--serif);color:var(--wine);min-height:20px}
 .tier h3{font-size:30px}
 .tier .p{font:600 46px/1 var(--serif);letter-spacing:-.015em;font-variant-numeric:lining-nums}
 .tier .term{font-size:15px;color:var(--muted);margin-top:6px}
@@ -484,6 +485,7 @@ h3{font-size:24px;line-height:1.15}
 .cmp3 .ch{display:grid;gap:6px;align-content:end;padding-bottom:16px!important}
 .cmp3 .ch h3{font-size:clamp(24px,2.3vw,30px);line-height:1.05}
 .cmp3 .ch p{margin:0;font-size:14px;line-height:1.4;color:var(--text);max-width:30ch}
+.poster-opt[hidden]{display:none!important}
 .cmp3 .kick{font:italic 600 16px/1 var(--serif);color:var(--primary-on-dark)}
 .cmp3 .rl{font:600 12px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:17px!important}
 .cmp3 .rl,.cmp3 .cv{border-top:1px solid var(--hairline)}
