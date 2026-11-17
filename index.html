@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Дерево семьи с источниками за 7 дней, от 4 990 ₽</title>
+<meta name="description" content="Расскажите, что знаете о предках. ИИ ищет в государственных базах и архивах, генеалог проверяет. Дерево и PDF-отчёт с источниками.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Узнайте, кем были ваши прадеды">
+<meta property="og:description" content="Дерево семьи и PDF-отчёт с источником у каждого факта. За 7 дней, от 4 990 ₽. Можно подарить: сертификат пришлём в течение суток.">
+<meta property="og:locale" content="ru_RU">
+<meta name="theme-color" content="#1f3227">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='12 8 76 90'%3E%3Cpath d='M14 10H86V50C86 74 70 88 50 96C30 88 14 74 14 50Z' fill='%232f4b3c'/%3E%3Cpath d='M14 10H86V27H14Z' fill='%237a2e2a'/%3E%3Cg fill='none' stroke='%23c9a66b' stroke-width='5' stroke-linecap='round'%3E%3Cpath d='M50 84V70Q50 62 36 56M50 70Q50 62 64 56M36 56V40M64 56V40'/%3E%3C/g%3E%3Ccircle cx='50' cy='84' r='5' fill='%23f4ecdb'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Comforter&family=IBM+Plex+Mono:wght@400;500&family=Great+Vibes&display=swap">
+<style>
+/* Система: плитки на всю ширину, светлые и тёмные по очереди. Смена фона и есть разделитель.
+   Один цвет действия: зелёный на светлом, латунь на тёмном. Одна тень, только у «предметов»: фото, запись, отчёт, сертификат. */
+:root{
+  --canvas:#fbf7ef; --parchment:#efe8da; --pearl:#fdfaf4;
+  --tile-1:#1f3227; --tile-2:#1a2a21; --tile-3:#23382c; --void:#121b16;
+  --ink:#241a14; --text:#3d3229; --muted:#75685b; --muted-dark:#c9bfab;
+  --hairline:rgba(36,26,20,.12); --hairline-dark:rgba(201,166,107,.28);
+  --primary:#2f4b3c; --primary-focus:#3d6150; --primary-on-dark:#c9a66b;
+  --wine:#7a2e2a; --brass:#b08d57; --cream:#f4ecdb; --hand:#3b2a20;
+  --ok-bg:#e3efe3; --ok:#2f5b3c; --may-bg:#f6ead2; --may:#7f5a12;
+  --shadow:3px 5px 30px 0 rgba(0,0,0,.22);
+  --shadow-dark:3px 8px 40px 0 rgba(0,0,0,.5);
+  --serif:"Cormorant Garamond",Garamond,Georgia,serif;
+  --sans:"Lora",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --script:"Comforter","Segoe Script",cursive;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--canvas);color:var(--ink);font:400 17px/1.47 var(--sans);letter-spacing:-.003em;-webkit-font-smoothing:antialiased;font-variant-numeric:oldstyle-nums proportional-nums}
+img{max-width:100%;display:block}
+a{color:var(--primary)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:max(22px,env(safe-area-inset-left,0px))}
+.narrow{max-width:980px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.012em;text-wrap:balance;margin:0}
+h2{font-size:clamp(38px,5.2vw,64px);line-height:1.04}
+h3{font-size:24px;line-height:1.15}
+.center{text-align:center}
+.center .lead{margin-inline:auto}
+.lead{font-size:clamp(19px,1.8vw,23px);line-height:1.38;color:var(--text);max-width:40ch;margin:18px 0 0}
+.fine{font-size:13px;color:var(--muted)}
+.src{font-family:var(--mono);font-size:13px;color:#7d6e5e;font-variant-numeric:lining-nums tabular-nums}
+
+/* плитки */
+.tile{padding-block:112px}
+@media (max-width:734px){.tile{padding-block:72px}}
+.t-canvas{background:var(--canvas)}
+.t-parch{background:var(--parchment)}
+.t-dark{background:var(--tile-1);color:var(--cream)}
+.t-dark-2{background:var(--tile-2);color:var(--cream)}
+.t-dark-3{background:var(--tile-3);color:var(--cream)}
+.t-dark .lead,.t-dark-2 .lead,.t-dark-3 .lead{color:var(--muted-dark)}
+.t-dark a,.t-dark-3 a{color:var(--primary-on-dark)}
+
+/* кнопки: пилюли, нажатие = scale(.95) */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;background:var(--primary);color:#fff;border:1px solid var(--primary);border-radius:999px;padding:11px 24px;font:500 17px/1.2 var(--sans);text-decoration:none;cursor:pointer;transition:transform .12s ease,background .2s;white-space:nowrap}
+.btn:active{transform:scale(.95)}
+.btn.ghost{background:transparent;color:var(--primary)}
+.btn.lg{padding:14px 30px;font-size:18px}
+.t-dark .btn,.t-dark-3 .btn,.on-dark .btn{background:var(--primary-on-dark);border-color:var(--primary-on-dark);color:var(--void)}
+.t-dark .btn.ghost,.t-dark-3 .btn.ghost,.on-dark .btn.ghost{background:transparent;color:var(--primary-on-dark)}
+.link{color:var(--primary);text-decoration:none;font:inherit;background:none;border:0;padding:0;cursor:pointer}
+.link:hover{text-decoration:underline;text-underline-offset:3px}
+.link::after{content:" ›"}
+:focus-visible{outline:2px solid var(--primary-focus);outline-offset:3px;border-radius:6px}
+.t-dark :focus-visible,.t-dark-2 :focus-visible,.t-dark-3 :focus-visible{outline-color:var(--primary-on-dark)}
+.chip{display:inline-block;font:600 12px/1.4 var(--sans);border-radius:999px;padding:2px 10px;white-space:nowrap}
+.ok{background:var(--ok-bg);color:var(--ok)}
+.may{background:var(--may-bg);color:var(--may)}
+
+/* навигация: тонкая тёмная + матовая с названием и кнопкой */
+.crest{width:30px;height:30px;color:var(--brass);display:block;flex:none}
+/* герб: цвета задаются переменными, светлый вариант по умолчанию */
+.crest,.hero-crest,.cert-crest,.foot-brand svg{--fld:#2f4b3c;--chg:#c9a66b;--chief:#7a2e2a;--edge:#2f4b3c;--root:#f4ecdb;--rib:#7a2e2a;--rib2:#5c211e;--ribt:#f4ecdb;--leaf:#2f4b3c}
+.crest{width:auto;height:40px;aspect-ratio:120/128;color:inherit}
+.hero-crest{display:block;width:clamp(70px,7.5vw,104px);height:auto;margin:-24px auto 16px;--edge:#c9a66b;--rib:#c9a66b;--rib2:#9c7f4f;--ribt:#17271e;--leaf:#c9a66b}
+.cert-crest{width:84px;height:auto;justify-self:center}
+.foot-brand{display:flex;align-items:center;gap:12px;margin-bottom:28px;font:600 24px/1 var(--serif);color:var(--ink)}
+.foot-brand svg{width:52px;height:auto}
+.foot-brand span span{color:var(--wine)}
+
+.subnav{position:sticky;top:0;z-index:30;height:52px;background:rgba(239,232,218,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hairline)}
+.subnav .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.subnav .name{display:inline-flex;align-items:center;gap:10px;font:600 23px/1 var(--serif);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.subnav .name span span{color:var(--wine)}
+.subnav nav{display:flex;gap:24px;align-items:center;font-size:14px}
+.subnav nav a:not(.btn){color:var(--text);text-decoration:none}
+.subnav nav a:not(.btn):hover{color:var(--primary)}
+.subnav .btn{min-height:30px;padding:5px 15px;font-size:14px}
+@media (max-width:900px){.subnav nav a:not(.btn){display:none}}
+@media (max-width:374px){.subnav .wrap{gap:8px}.subnav .name{font-size:19px;gap:8px}.subnav .crest{height:32px}.subnav .btn{padding:5px 12px;font-size:13px}}
+
+/* герой */
+.hero{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23b08d57' stroke-opacity='.09' stroke-width='1.2'%3E%3Cpath d='M48 6c10 14 22 20 22 34S58 60 48 70C38 60 26 54 26 40S38 20 48 6Z'/%3E%3Cpath d='M48 22c5 7 10 10 10 18s-5 12-10 17c-5-5-10-9-10-17s5-11 10-18Z'/%3E%3Cpath d='M48 70v20M40 84c4-4 12-4 16 0M0 0c8 10 8 22 0 30M96 0c-8 10-8 22 0 30M0 66c8 10 8 22 0 30M96 66c-8 10-8 22 0 30'/%3E%3Ccircle cx='48' cy='40' r='2.5'/%3E%3Ccircle cx='0' cy='48' r='3'/%3E%3Ccircle cx='96' cy='48' r='3'/%3E%3C/g%3E%3C/svg%3E") center/96px 96px,var(--tile-1);color:var(--cream);text-align:center;padding:120px 0 128px;overflow:hidden}
+.hero h1{font-size:clamp(46px,7.4vw,96px);line-height:1;letter-spacing:-.018em;color:#f6efe0;max-width:18ch;margin-inline:auto}
+.hero h1 u{text-decoration:none;font-style:italic;font-weight:500;color:#e2c48f}
+.hero .lead{color:var(--muted-dark);max-width:44ch;margin:22px auto 0}
+.hero .ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.hero .price{margin-top:18px;font-size:16px;color:var(--muted-dark)}
+.hero .price b{color:var(--cream);font-weight:600;font-variant-numeric:lining-nums}
+@media (max-width:734px){.hero{padding:72px 0 80px}}
+.record{position:relative;margin:0;padding:26px 28px 22px;color:var(--hand);transform:rotate(-1.2deg);
+  background:
+    radial-gradient(circle at 82% 18%,rgba(140,95,40,.10) 0 3px,transparent 4px),
+    radial-gradient(circle at 12% 76%,rgba(140,95,40,.08) 0 5px,transparent 6px),
+    radial-gradient(circle at 64% 88%,rgba(140,95,40,.07) 0 2px,transparent 3px),
+    radial-gradient(ellipse at 50% 45%,#f6edd6 0%,#efe2c3 70%,#e2cfa6 100%);
+  box-shadow:inset 0 0 50px rgba(120,80,30,.28),inset 0 0 0 1px rgba(120,80,30,.18),0 40px 70px -30px rgba(0,0,0,.75),0 2px 0 rgba(0,0,0,.2);
+  clip-path:polygon(0 1%,3% 0,22% .6%,41% 0,63% .8%,82% 0,100% .9%,99.4% 22%,100% 47%,99.3% 71%,100% 99%,78% 100%,56% 99.2%,33% 100%,12% 99.3%,0 100%,.6% 74%,0 51%,.7% 26%)}
+.record .hd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--serif);font-style:italic;font-size:16px;color:#7a6142;border-bottom:1px solid rgba(122,90,46,.35);padding-bottom:8px}
+.record .hd b{font-style:normal;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px}
+.record .reading{display:grid;margin:14px 0 14px;position:relative;--p:0}
+.record .reading>*{grid-area:1/1}
+.ledger{display:grid;grid-template-columns:2.6em 3.9em minmax(0,1fr) minmax(0,2.2fr);clip-path:inset(calc(var(--p)*100%) 0 0 0)}
+.ledger>div{border-right:1px solid rgba(122,90,46,.38);padding:4px 8px;min-width:0}
+.ledger>div:nth-child(4n){border-right:0}
+.ledger .th{font-family:var(--serif);font-style:italic;font-size:12px;line-height:1.2;color:#86704f;border-bottom:1px solid rgba(122,90,46,.38);padding-bottom:6px;align-self:stretch}
+.ledger .td{font-family:var(--script);font-size:clamp(24px,2.3vw,31px);line-height:1.15;color:var(--hand);padding-top:8px}
+.record .clean{font-family:var(--sans);font-weight:400;font-size:clamp(18px,1.7vw,21px);line-height:1.55;color:var(--ink);align-self:center;margin:0;clip-path:inset(0 0 calc(100% - var(--p)*100%) 0)}
+.record .clean b{font-weight:600;background:linear-gradient(transparent 60%,rgba(176,141,87,.38) 60%)}
+.record .scan{position:absolute;left:-10px;right:-10px;top:calc(var(--p)*100%);height:2px;background:var(--brass);box-shadow:0 0 14px 2px rgba(176,141,87,.6);opacity:calc(min(var(--p)*12,1) * min((1 - var(--p))*12,1));pointer-events:none}
+.record .lbl-clean,.record.done .lbl-hand{display:none}
+.record.done .lbl-clean{display:inline}
+.record .ft{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.record .src{color:#86704f}
+.stamp{width:104px;height:104px;flex:none;color:var(--wine);margin:-34px -4px -10px 0;transform:rotate(-14deg) scale(1.6);opacity:0;transition:opacity .25s,transform .35s cubic-bezier(.3,1.6,.5,1);mix-blend-mode:multiply}
+.stamp svg{display:block;width:100%;height:100%;overflow:visible}
+.record.done .stamp{opacity:.85;transform:rotate(-14deg) scale(1)}
+@media (max-width:560px){.ledger{grid-template-columns:1.8em 2.6em minmax(0,1fr) minmax(0,1.9fr)}.ledger .th{font-size:10.5px}.ledger>div{padding:3px 5px}.stamp{width:84px;height:84px}.record{padding:20px 18px 18px}}
+@media (prefers-reduced-motion:reduce){.record .reading{gap:14px}.record .reading>*{grid-area:auto}.ledger,.record .clean{clip-path:none}.record .scan{display:none}.stamp{transition:none}}
+.record{box-shadow:inset 0 0 50px rgba(120,80,30,.28),inset 0 0 0 1px rgba(120,80,30,.18),var(--shadow-dark)}
+.record .ft{padding-right:14px;padding-bottom:6px}
+
+/* прилипающий экран: рукопись -> расшифровка -> штамп -> дерево */
+.reveal{height:340vh;position:relative;background:var(--tile-2)}
+.stage{position:sticky;top:52px;height:calc(100vh - 52px);height:calc(100svh - 52px);display:grid;align-items:center;overflow:hidden;padding-block:20px 16px}
+.stage-in{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:32px 56px;align-items:center;width:100%}
+@media (max-width:860px){.stage-in{grid-template-columns:1fr;gap:18px;align-content:center}}
+.caps{list-style:none;margin:0;padding:0;display:grid}
+.caps li{grid-area:1/1;font-family:var(--serif);font-weight:600;font-size:clamp(28px,3.4vw,46px);line-height:1.1;letter-spacing:-.01em;color:var(--cream);opacity:0;transform:translateY(18px);transition:opacity .45s ease,transform .45s ease}
+.caps li b{display:block;color:var(--primary-on-dark);font-weight:600}
+.caps li.on{opacity:1;transform:none}
+@media (max-width:860px){.caps li{font-size:24px}.caps li b{display:inline}}
+.record.big{transform:translateY(calc((var(--k,1) - 1) * var(--rh,0px) / 2)) scale(calc((.86 + var(--s,0)*.14) * var(--k,1))) rotate(calc(-1.2deg + var(--s,0)*1.2deg));transform-origin:50% 50%;will-change:transform;margin-bottom:calc((var(--k,1) - 1) * var(--rh,0px));transition:transform .4s ease,margin-bottom .5s ease}
+.record.big .ledger .td{font-size:clamp(26px,2.7vw,38px)}
+.record.big .clean{font-size:clamp(19px,2vw,26px)}
+/* маленькие телефоны: почерк и дерево чуть мельче, чтобы последний шаг поместился в экран */
+@media (max-width:400px){.record.big .ledger .td{font-size:22px}.mini-tree{gap:8px 10px}.mini-tree .n{padding:7px 10px;font-size:14px}}
+@media (max-width:374px){.caps li{font-size:22px}}
+.mini-tree{grid-column:2;display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;justify-items:center;opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s,margin-bottom .5s ease}
+@media (max-width:860px){.mini-tree{grid-column:1}}
+.mini-tree.on{opacity:1;transform:none}
+.mini-tree .n{background:rgba(244,236,219,.06);border:1px solid var(--hairline-dark);color:var(--cream);border-radius:11px;padding:8px 16px;font-size:15px;text-align:center;display:grid}
+.mini-tree .n small{color:#b3a891;font-size:12px}
+.mini-tree .ln{grid-column:1/-1;width:50%;height:14px;border:1px solid rgba(201,166,107,.6);border-top:0;border-radius:0 0 8px 8px;margin-top:-6px}
+.mini-tree .main{grid-column:1/-1;background:var(--primary-on-dark);color:var(--void);border-color:var(--primary-on-dark)}
+.mini-tree .main small{color:#3a3020}
+@media (prefers-reduced-motion:reduce){.reveal{height:auto}.stage{position:static;height:auto;padding-block:72px}.caps li{grid-area:auto;opacity:1;transform:none;margin-bottom:12px}.record.big{transform:none}.mini-tree{opacity:1;transform:none}}
+@media (max-height:500px){.reveal{height:auto}.stage{position:static;height:auto;padding-block:56px}.mini-tree{margin-bottom:0!important}.caps li{grid-area:auto;opacity:1;transform:none;margin-bottom:12px}.record.big{transform:none;margin-bottom:0}.mini-tree{opacity:1;transform:none}.record .reading{gap:14px}.record .reading>*{grid-area:auto}.ledger,.record .clean{clip-path:none}.record .scan{display:none}}
+
+/* как это работает */
+.how ol{list-style:none;margin:72px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px;counter-reset:s;text-align:center}
+@media (max-width:820px){.how ol{grid-template-columns:1fr;gap:40px;margin-top:48px}}
+.how li{counter-increment:s;display:grid;gap:12px;justify-items:center}
+.how li::before{content:counter(s,upper-roman);font:600 44px/1 var(--serif);color:var(--brass)}
+.how p{margin:0;color:var(--text);max-width:32ch}
+
+/* что вы получите + витрина результата */
+.get{position:relative}
+.gstage{padding-block:96px}
+.gin{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:64px;align-items:center}
+.gleft h2{margin-bottom:24px;font-size:clamp(38px,3.8vw,54px)}
+.glnav{display:block}
+.gl-list{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.gl-list button{all:unset;box-sizing:border-box;display:grid;gap:4px;width:100%;padding:10px 0 10px 22px;border-left:2px solid var(--hairline);cursor:pointer;transition:opacity .35s,border-color .35s}
+.gl-list button>b{font:600 23px/1.15 var(--serif);color:var(--ink)}
+.gl-list button>span{color:var(--text);font-size:15px;line-height:1.42}
+.gl-list li.on button{border-left-color:var(--brass)}
+.gl-list li:not(.on) button{opacity:.38}
+.gl-list li:not(.on) button:hover{opacity:.7}
+.gl-list button:focus-visible{outline:2px solid var(--primary-focus);outline-offset:3px}
+.device{background:#151d18;border-radius:40px;padding:12px;box-shadow:var(--shadow-dark);border:1px solid #3a4a40}
+.device .win{border-radius:29px;box-shadow:none}
+.device .wbar{padding:14px 24px}
+@media (min-width:981px){.device .wbody{height:min(620px,max(440px,calc(100vh - 180px)))}.device .ex{overflow:auto}.device .ex[data-more]{-webkit-mask-image:linear-gradient(#000 calc(100% - 64px),transparent);mask-image:linear-gradient(#000 calc(100% - 64px),transparent)}}
+.wbody{position:relative;display:grid}
+.ex{grid-area:1/1;padding:30px 28px;opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease;pointer-events:none;overflow-x:auto}
+.ex.on{opacity:1;transform:none;pointer-events:auto}
+/* прилипание только на широких и достаточно высоких экранах */
+@media (min-width:981px) and (min-height:700px){
+  .get.sticky{height:520vh}
+  .get.sticky .gstage{position:sticky;top:52px;height:calc(100vh - 52px);display:grid;align-items:center;padding-block:24px 88px}
+  /* окно: высота экрана минус шапка, нижняя панель и поля; на высоких экранах до 780px */
+  .get.sticky .device .wbody{height:min(780px,calc(100vh - 52px - 64px - 140px))}
+}
+/* невысокий экран: у неактивных пунктов только заголовок, всё плотнее */
+@media (min-width:981px) and (min-height:700px) and (max-height:900px){
+  .get.sticky .gleft h2{margin-bottom:16px}
+  .get.sticky .gl-list button{padding-block:7px}
+  .get.sticky .gl-list li:not(.on) button>span{display:none}
+  .get.sticky .device .ex{padding:22px 24px}
+  .get.sticky .device .wbar{padding-block:11px}
+}
+@media (max-width:980px){
+  .gin{grid-template-columns:1fr;gap:28px}
+  .gl-list li:not(.on) button{opacity:1}
+  .gright{display:none}
+  .gl-list li{display:grid;gap:14px;margin-bottom:22px}
+  .gl-list .mwin .ex{opacity:1;transform:none;pointer-events:auto;padding:20px 14px}
+}
+.tree{min-width:600px}
+/* военный путь и план */
+.wh{display:grid;gap:2px;margin-bottom:18px}
+.wh b{font:600 24px/1.15 var(--serif)}
+.wh span{font-size:14px;color:var(--muted)}
+.plan ol{list-style:none;margin:0;padding:0;display:grid}
+.plan li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;padding:14px 0;border-top:1px solid var(--hairline);align-items:start}
+.plan li{grid-template-columns:minmax(0,1fr) auto}
+.plan li div{display:grid;gap:2px}
+.plan li div>span:not(.src){font-size:15px;color:var(--text)}
+.war{background:var(--tile-1);color:var(--cream);border-radius:18px;padding:26px 26px 20px;font-variant-numeric:lining-nums}
+.wtop{display:grid;gap:2px;margin-bottom:22px}
+.wtop b{font:600 26px/1.1 var(--serif);color:#f6efe0}
+.wtop span{font-size:14px;color:var(--muted-dark)}
+.wgrid{display:grid;grid-template-columns:clamp(96px,22%,150px) repeat(6,minmax(0,1fr));grid-template-rows:auto 96px 96px;align-items:center;column-gap:0}
+.wax{grid-row:1;grid-column:1/-1;display:grid;grid-template-columns:subgrid;font:600 14px var(--serif);color:var(--primary-on-dark);border-bottom:1px solid var(--hairline-dark);padding-bottom:8px}
+.wax span{text-align:center}
+.wlane{grid-column:1;display:grid;gap:1px;padding-right:12px}
+.wlane b{font-size:14px;font-weight:600;line-height:1.25;color:#f6efe0}
+.wlane small{font-size:12px;color:var(--muted-dark)}
+.wline{grid-column:2/-1;height:2px;background:linear-gradient(90deg,rgba(201,166,107,.15),rgba(201,166,107,.7),rgba(201,166,107,.15));align-self:center;margin-top:-22px}
+.wline.short{grid-column:2/5}
+.wev{display:grid;justify-items:center;gap:8px;text-align:center;position:relative;z-index:1}
+.wev i{width:16px;height:16px;border-radius:50%;background:var(--primary-on-dark);box-shadow:0 0 0 4px var(--tile-1),0 0 0 5px rgba(201,166,107,.5)}
+.wev.wmay i{background:var(--tile-1);border:2px dashed var(--primary-on-dark)}
+.wev span{font-size:12px;line-height:1.2;color:var(--cream);max-width:10ch}
+.wfoot{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:18px}
+.wdoc{background:rgba(244,236,219,.06);border:1px solid var(--hairline-dark);border-radius:11px;padding:12px 14px;display:grid;gap:2px}
+.wdoc b{font:600 17px var(--serif);color:#f6efe0}
+.wdoc span{font-size:12.5px;color:var(--muted-dark)}
+.wleg{display:flex;gap:18px;justify-content:flex-end;margin-top:12px;font-size:12px;color:var(--muted-dark)}
+.wleg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;background:var(--primary-on-dark)}
+.wleg i.wm{background:none;border:1.5px dashed var(--primary-on-dark)}
+.ex[data-i="3"]{overflow-x:auto}
+@media (max-width:640px){.war{padding:18px 14px}.wfoot{grid-template-columns:1fr}}
+/* телефон: хроника списком по людям, год у каждого события */
+@media (max-width:640px){
+  .war .wgrid{display:block}
+  .war .wax,.war .wline{display:none}
+  .war .wlane{padding:14px 0 6px;border-top:1px solid var(--hairline-dark)}
+  .war .wax+.wlane{border-top:0;padding-top:0}
+  .war .wlane b{font-size:15px}
+  .war .wev{grid-template-columns:16px minmax(0,1fr);justify-items:start;align-items:center;gap:12px;text-align:left;padding:7px 0 7px 2px}
+  .war .wev::before{content:"";position:absolute;left:9.5px;top:0;bottom:0;border-left:1px solid rgba(201,166,107,.45);z-index:-1}
+  .war .wline+.wev::before{top:50%}
+  .war .wev:has(+.wlane)::before,.war .wev:last-child::before{bottom:50%}
+  .war .wev span{max-width:none;font-size:14px}
+  .war .wev span::before{content:attr(data-y) " · ";color:var(--primary-on-dark);font-weight:600}
+  .war .wleg{justify-content:flex-start}
+}
+/* узкое окно в липком режиме: подписи событий в две строки, не слипаются */
+@media (min-width:981px) and (max-width:1100px){.device .wev span{max-width:8ch}}
+.docs{display:grid;gap:16px}
+.dtop{display:grid;gap:2px}
+.dtop b{font:600 24px/1.15 var(--serif)}
+.dtop span{font-size:14px;color:var(--muted)}
+.files{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 16px}
+@media (max-width:560px){.files{grid-template-columns:1fr 1fr}}
+.file{display:grid;gap:6px;align-content:start;min-width:0}
+.fth{height:110px;border-radius:10px;overflow:hidden;display:grid;place-items:center;border:1px solid var(--hairline);background:#fff;position:relative}
+.fth.ph img{width:100%;height:100%;object-fit:cover;filter:sepia(.3)}
+.fth.dc{background:#f3ead4;align-content:center;gap:6px;padding:0 22%}
+.fth.dc em{font:600 26px/1 var(--serif);font-style:normal;color:var(--wine);margin-bottom:4px}
+.fth.dc i{display:block;height:2px;width:100%;background:rgba(36,26,20,.18)}
+.fth.lk{background:var(--tile-1);color:var(--primary-on-dark);font-size:34px}
+.file b{font:500 12px/1.3 var(--mono);color:var(--ink);overflow-wrap:break-word}
+.slink{font-size:12px;color:var(--primary);text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(47,75,60,.35)}
+.slink::after{content:" ↗"}
+.dnote{margin:0;font-size:14px;color:var(--text);border-top:1px solid var(--hairline);padding-top:12px}
+/* источники в примерах выглядят как ссылки: каждый факт ведёт к документу */
+.report .src,.db td.src{color:var(--primary);text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(47,75,60,.35)}
+.report .src::after,.db td.src::after{content:" ↗"}
+.db td.src.nl{color:var(--muted);text-decoration:none}.db td.src.nl::after{content:none}
+.report .rh .src{color:#7d6e5e;text-decoration:none}.report .rh .src::after{content:none}
+.plan em{font-style:normal;font-size:12px;font-weight:600;color:var(--primary);background:rgba(47,75,60,.08);border-radius:999px;padding:3px 10px;white-space:nowrap}
+@media (max-width:560px){.plan li{grid-template-columns:1fr}.plan em{justify-self:start}}
+.win{background:var(--canvas);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.wbar{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--hairline);background:var(--pearl)}
+.wbar .fn{font-family:var(--mono);font-size:13px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* дерево */
+.tree{display:grid;gap:0;min-width:600px;font-variant-numeric:lining-nums}
+.tree .tg{display:grid;grid-template-columns:92px 1fr;align-items:center;gap:12px}
+.gl{font:italic 600 16px/1.2 var(--serif);color:var(--muted);text-align:right}
+.tr{display:grid;gap:14px;justify-content:center}
+.r4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.r2{grid-template-columns:repeat(2,minmax(0,220px))}
+.r1{grid-template-columns:minmax(0,220px)}
+.tn{border-radius:11px;padding:10px 12px;background:#fff;border:1px solid var(--hairline);display:grid;gap:1px;text-align:center;position:relative}
+.tn b{font:600 17px/1.15 var(--serif)}
+.tn span{font-size:14px;color:var(--text)}
+.tn small{font-size:12px;color:var(--muted)}
+.tn i{font-style:normal;font-size:11px;margin-top:4px;color:var(--muted)}
+.tn i::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:1px;background:currentColor}
+.tn.ok{border-color:rgba(47,91,60,.45)}.tn.ok i{color:var(--ok)}
+.tn.may i{color:var(--may)}.tn.may{border-color:rgba(127,90,18,.35)}
+.tn.own{background:var(--pearl)}.tn.own i{color:var(--muted)}
+.tn.find{background:none;border:1px dashed rgba(36,26,20,.25)}.tn.find b{color:var(--muted)}.tn.find i{color:var(--muted)}.tn.find i::before{background:none;border:1px solid currentColor}
+.tl{display:grid;grid-template-columns:92px 1fr;gap:12px;height:30px}
+.tl::before{content:""}
+.tl.l2{grid-template-columns:92px 1fr 1fr}
+.tl i{position:relative;display:block}
+.tl i::before{content:"";position:absolute;left:25%;right:25%;top:0;height:14px;border:1px solid rgba(176,141,87,.8);border-top:0;border-radius:0 0 10px 10px}
+.tl i::after{content:"";position:absolute;left:50%;top:14px;bottom:0;border-left:1px solid rgba(176,141,87,.8)}
+.tl.l1 i::before{left:calc(50% - 117px);right:calc(50% - 117px)}
+.device .tree{min-width:0}
+.tn{padding:7px 9px}.tn b{font-size:15.5px}.tn span{font-size:13px}.tn i{font-size:12px;margin-top:2px}
+.tl{height:22px}.tl i::before{height:11px}.tl i::after{top:11px}
+.tr{gap:10px}
+@media (max-width:640px){.tree{min-width:0;gap:14px}.tree .tg{grid-template-columns:1fr;gap:6px}.gl{text-align:center}.r4,.r2{grid-template-columns:1fr 1fr}.r1{grid-template-columns:minmax(0,220px)}.tl{display:none}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin-top:18px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.legend .ok{background:var(--ok)}.legend .may{background:var(--may)}.legend .own{background:#b9ad9b}.legend .find{border:1px solid var(--muted)}
+/* таблица */
+.dbbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.pill{font-size:13px;border:1px solid var(--hairline);border-radius:999px;padding:5px 12px;color:var(--text);background:#fff}
+.pill.on{border:2px solid var(--primary);padding:4px 11px;color:var(--ink)}
+.dbscroll{overflow-x:auto;border:1px solid var(--hairline);border-radius:11px}
+.db table{border-collapse:collapse;width:100%;min-width:440px;font-size:13.5px;line-height:1.35;font-variant-numeric:lining-nums}
+.db th{position:sticky;top:0;background:var(--pearl);text-align:left;font-weight:600;font-size:12px;color:var(--muted);padding:10px 9px;border-bottom:1px solid var(--hairline);white-space:nowrap}
+.db td{padding:10px 9px;border-bottom:1px solid var(--hairline);vertical-align:top;color:var(--text)}
+.db tr:last-child td{border-bottom:0}
+.db tbody tr:nth-child(even){background:rgba(239,232,218,.35)}
+.db td b{color:var(--ink);font-weight:600}
+.db td.n{color:var(--muted)}
+.db td small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.db td.src{font-size:12px;overflow-wrap:break-word}
+/* таблица плотнее: родство в строке с именем, колонка «Человек» шире */
+.db td{padding-block:8px}
+.db td:nth-child(2) small{display:inline;font-size:12px}
+.db td:nth-child(2) small::before{content:" · "}
+.db th:nth-child(2){width:31%}
+.db th:first-child{width:2.2em}
+/* телефон: строка таблицы как карточка, № скрыт, статус под именем */
+@media (max-width:640px){
+  .db table{min-width:0}
+  .db thead,.db td.n{display:none}
+  .db tr{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:6px 12px;padding:10px 12px;border-bottom:1px solid var(--hairline)}
+  .db tr:last-child{border-bottom:0}
+  .db td{padding:0;border:0}
+  .db td:nth-child(2){grid-column:1;grid-row:1}
+  .db td:nth-child(3){grid-column:2;grid-row:1/3}
+  .db td:nth-child(4){grid-column:1/-1;grid-row:3}
+  .db td:nth-child(5){grid-column:1;grid-row:2}
+}
+.st{font-size:12px;font-weight:600;border-radius:999px;padding:2px 8px;white-space:nowrap;background:#efe9df;color:var(--muted)}
+.st.ok{background:var(--ok-bg);color:var(--ok)}.st.may{background:var(--may-bg);color:var(--may)}.st.find{background:none;border:1px dashed rgba(36,26,20,.3)}
+.dbnote{margin:16px 0 0;font-size:14px}
+.pdfwrap{max-width:620px;margin:0 auto}
+.report{background:var(--pearl);border-radius:4px;box-shadow:var(--shadow);overflow:hidden}
+.report .rh{padding:20px 24px;border-bottom:1px solid var(--hairline);display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+.report .rh b{font:600 22px var(--serif)}
+.report .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:14px 24px;border-bottom:1px solid var(--hairline);align-items:center}
+.report .row:last-child{border-bottom:0}
+.report .who{font-weight:600}
+.report .what{grid-column:1/-1;font-size:15px;color:var(--text)}
+.report .row .src{grid-column:1/-1}
+.report .gen{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:14px 24px 0}
+
+/* где мы ищем */
+.where h2{font-size:clamp(40px,5.4vw,68px)}
+.rail{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:max(22px,calc((100vw - 1180px)/2 + 22px));padding:32px max(22px,calc((100vw - 1180px)/2 + 22px)) 8px;scrollbar-width:none;outline:none}
+.rail::-webkit-scrollbar{display:none}
+.slide{flex:0 0 auto;width:min(760px,82vw);margin:0;scroll-snap-align:start;display:grid;gap:22px;align-content:start}
+.slide:nth-child(2){width:min(440px,72vw)}
+.vis{height:clamp(220px,calc(100vh - 430px),560px);height:clamp(220px,calc(100svh - 430px),560px);border-radius:28px;overflow:hidden;display:grid;place-items:center;position:relative}
+@media (max-width:640px){.vis{height:clamp(220px,calc(100svh - 400px),440px);border-radius:22px}}
+.slide figcaption{color:var(--muted-dark);font-size:17px;line-height:1.45;max-width:46ch;padding-inline:4px}
+.slide figcaption b{color:#f6efe0;font-weight:600}
+.v-photo{background:#12190f}
+.v-photo img{width:100%;height:100%;object-fit:cover;filter:sepia(.25) saturate(.9)}
+.v-photo.wide img{object-position:50% 30%}
+.v-war{background:radial-gradient(ellipse at 50% 35%,#5a2a25,#2b1512 75%)}
+.card-doc{width:min(420px,78%);background:#efe6cf;color:#2a211a;padding:26px 28px;transform:rotate(-2deg);box-shadow:var(--shadow-dark);font-family:var(--mono);font-size:14px;border-radius:3px}
+.cd-h{font-weight:500;text-transform:uppercase;letter-spacing:.12em;font-size:13px;display:flex;justify-content:space-between;border-bottom:1px solid #b9a98a;padding-bottom:10px;margin-bottom:6px}
+.cd-h span{text-transform:none;letter-spacing:0;color:#8a7b62}
+.card-doc dl{margin:0}
+.card-doc dl div{display:grid;grid-template-columns:9.5em 1fr;gap:10px;padding:8px 0;border-bottom:1px dashed #c9bb9e}
+.card-doc dt{color:#7d6e57}
+.card-doc dd{margin:0}
+@media (max-width:640px){.card-doc{padding:18px;font-size:12px}.card-doc dl div{grid-template-columns:1fr;gap:0}}
+.v-letter{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M24 4l20 20-20 20L4 24z' fill='none' stroke='%23b08d57' stroke-opacity='.12'/%3E%3C/svg%3E"),#23382c}
+.letter{width:min(400px,78%);background:#f7f1e3;color:#2a211a;padding:30px 30px 24px;transform:rotate(1.5deg);box-shadow:var(--shadow-dark);border-radius:3px;font-size:15px;line-height:1.5}
+.letter p{margin:0 0 12px}
+.letter .to{text-align:right;font-size:13px;color:#6f6252}
+.letter .subj{text-align:center;font:600 22px var(--serif);margin:18px 0}
+.letter .sign{font-family:var(--script);font-size:24px;color:var(--hand);text-align:right;margin:18px 0 0}
+.rail-ctl{margin-top:28px}
+.where-hd{display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+.where.tile{padding-block:clamp(56px,9vh,112px)}
+@media (max-height:640px) and (min-width:641px){.where.tile{padding-block:36px 48px}.where h2{font-size:44px}.rail{padding-top:20px}.vis{height:clamp(180px,calc(100vh - 400px),560px)}.slide{gap:14px}.slide figcaption{font-size:15px}}
+@media (max-height:760px) and (min-width:641px){.v-war .card-doc{transform:scale(.72) rotate(-2deg)}.v-letter .letter{transform:scale(.72) rotate(1.5deg)}}
+@media (max-height:600px) and (min-width:641px){.v-war .card-doc{transform:scale(.4) rotate(-2deg)}.v-letter .letter{transform:scale(.4) rotate(1.5deg)}}
+.where .note{margin:0;max-width:60ch;color:var(--muted-dark);font-size:15px}
+.rbtns{display:flex;gap:14px;flex:none}
+.rb{width:44px;height:44px;border-radius:50%;border:0;background:rgba(244,236,219,.14);display:grid;place-items:center;cursor:pointer;transition:transform .12s,opacity .2s}
+.rb:active{transform:scale(.95)}
+.rb:disabled{opacity:.35;cursor:default}
+.rb svg{width:20px;height:20px;fill:none;stroke:var(--cream);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* тарифы: карточки магазина */
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:64px;align-items:stretch;text-align:left}
+@media (max-width:980px){.tiers{gap:14px}.tier{padding:28px 20px}.tier .p{font-size:40px}}
+@media (max-width:860px){.tiers{grid-template-columns:minmax(0,1fr)}.tier{padding:28px 24px}}
+.tier{background:var(--canvas);border:1px solid var(--hairline);border-radius:18px;padding:32px 28px;display:flex;flex-direction:column;gap:16px}
+.tier.main{border:2px solid var(--primary)}
+.tier .kick{font:italic 600 17px/1 var(--serif);color:var(--wine);min-height:17px}
+.tier h3{font-size:30px}
+.tier .p{font:600 46px/1 var(--serif);letter-spacing:-.015em;font-variant-numeric:lining-nums}
+.tier .term{font-size:15px;color:var(--muted);margin-top:6px}
+.tier ul{list-style:none;margin:6px 0 0;padding:16px 0 0;border-top:1px solid var(--hairline);display:grid;gap:10px;flex:1;align-content:start}
+.tier li{font-size:16px;color:var(--text);padding-left:20px;position:relative}
+.tier li::before{content:"—";position:absolute;left:0;color:var(--brass)}
+.tier .btn{margin-top:10px;white-space:normal;text-align:center}
+@media (max-width:860px){.tier .kick:empty{display:none}}
+.sub-door{margin-top:44px;color:var(--text)}
+.guarantee{margin:18px auto 0;max-width:78ch}
+
+/* подарок */
+.eyebrow{margin:0 0 14px;font:600 19px var(--sans);color:#f6efe0}
+.gh{font-size:clamp(48px,7.4vw,104px);line-height:1;letter-spacing:-.02em;color:#f6efe0;max-width:15ch}
+.glead{margin:36px 0 0;max-width:58ch;font-size:clamp(19px,1.7vw,23px);line-height:1.45;color:#9fa89f}
+.glead strong{color:#f6efe0;font-weight:500}
+.gcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:80px;align-items:center;margin-top:88px}
+@media (max-width:920px){.gcols{grid-template-columns:1fr;gap:56px;margin-top:56px}}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:44px 32px;margin-bottom:44px}
+.stats b{display:block;font:600 clamp(44px,4.6vw,60px)/1 var(--serif);color:#f6efe0;letter-spacing:-.015em;font-variant-numeric:lining-nums}
+.stats span{display:block;margin-top:8px;font-size:15px;color:var(--muted-dark)}
+.gfine{margin:22px 0 0;font-size:14px;color:#8f978f;max-width:46ch}
+.cert{background:#f6eedc;color:var(--ink);border-radius:4px;padding:40px 34px;transform:rotate(1.4deg);box-shadow:var(--shadow-dark);display:grid;gap:14px;text-align:center;outline:1px solid rgba(176,141,87,.6);outline-offset:-12px}
+.cert .k{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.cert .t{font:600 34px/1.05 var(--serif)}
+.cert .hand{font-family:"Great Vibes",var(--script);font-size:40px;line-height:1.15;color:var(--hand)}
+.cert .src{border-top:1px solid rgba(176,141,87,.5);padding-top:14px}
+
+
+/* первый экран для тех, кто уже искал */
+@media (max-width:560px){.hero-crest{display:none}.hero .lead{font-size:17px}}
+.hero-kick{margin:0 0 14px;font:italic 500 clamp(19px,2vw,24px)/1.2 var(--serif);color:#e2c48f}
+/* где заканчиваются бесплатные базы */
+.beyond h2{margin-top:10px}
+.beyond .eyebrow{margin:0;font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--wine)}
+.bcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:40px}
+.bcol{background:var(--canvas);border-radius:18px;padding:26px 24px;display:grid;gap:10px;align-content:start}
+.bcol h3{font-size:24px}
+.bcol p{margin:0;color:var(--text);font-size:16px;line-height:1.5}
+.bcol .bend{color:var(--wine);font-size:15px;border-top:1px solid var(--hairline);padding-top:10px;margin-top:4px}
+.bcol.us{background:var(--tile-1);color:var(--cream);box-shadow:var(--shadow)}
+.bcol.us h3{color:#f6efe0}
+.bcol.us p{color:var(--muted-dark)}
+.bcol.us .btn{justify-self:start;margin-top:8px;background:var(--primary-on-dark);border-color:var(--primary-on-dark);color:var(--void)}
+.bnote{margin:24px 0 0;color:var(--text);max-width:62ch}
+@media (max-width:860px){.bcols{grid-template-columns:1fr}.bcol.us{order:-1}}
+/* сравнение: таблица с подписями строк, колонка «Мы» — тёмная плитка поверх */
+.cmpw{margin-top:28px}
+.compare h2{font-size:clamp(36px,4.4vw,54px)}
+.compare.tile{padding-block:clamp(56px,9vh,112px)}
+.cmp3{position:relative;display:grid;grid-template-columns:minmax(96px,.5fr) repeat(3,minmax(0,1fr));text-align:left;font-variant-numeric:lining-nums}
+.cmp3 .usbg{grid-column:2;grid-row:1/7;background:var(--tile-1);border-radius:20px;box-shadow:var(--shadow);margin:-10px 0}
+.cmp3>div:not(.usbg){grid-column:var(--c);grid-row:var(--r);position:relative;padding:11px clamp(14px,1.8vw,26px)}
+.cmp3 .ch{display:grid;gap:6px;align-content:end;padding-bottom:16px!important}
+.cmp3 .ch h3{font-size:clamp(24px,2.3vw,30px);line-height:1.05}
+.cmp3 .ch p{margin:0;font-size:14px;line-height:1.4;color:var(--text);max-width:30ch}
+.cmp3 .kick{font:italic 600 16px/1 var(--serif);color:var(--primary-on-dark)}
+.cmp3 .rl{font:600 12px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:17px!important}
+.cmp3 .rl,.cmp3 .cv{border-top:1px solid var(--hairline)}
+.cmp3 .cv{display:grid;gap:2px;align-content:start}
+.cmp3 .cv:has(.ic){grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:10px}
+.cmp3 .cv b{font:600 clamp(20px,1.8vw,24px)/1.15 var(--serif);color:var(--ink);letter-spacing:-.005em}
+.cmp3 .cv span{font-size:14px;line-height:1.38;color:var(--text)}
+.cmp3 .cv .ic{width:24px;height:24px;fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.cmp3 .us{color:var(--cream)}
+.cmp3 .us.cv{border-top-color:var(--hairline-dark)}
+.cmp3 .us h3,.cmp3 .us b{color:#f6efe0}
+.cmp3 .us p,.cmp3 .us span{color:var(--muted-dark)}
+.cmp3 .us .ic{stroke:var(--primary-on-dark)}
+.cmp3 .ct{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-top:8px}
+.cmp3 .ct .btn{min-height:40px;padding:8px 18px;font-size:15px}
+.cmp3 .ct .btn{background:var(--primary-on-dark);border-color:var(--primary-on-dark);color:var(--void)}
+.cmp3 .ct .link{color:var(--primary-on-dark)}
+.cmp3 .no{color:var(--muted)!important}
+@media (max-width:760px){
+  .cmp3{grid-template-columns:minmax(0,1fr);gap:0}
+  .cmp3 .usbg,.cmp3 .rl,.cmp3 .e{display:none}
+  .cmp3>div:not(.usbg){grid-column:auto;grid-row:auto;order:var(--o);padding:16px 22px;background:var(--parchment)}
+  .cmp3 .us{background:var(--tile-1)!important}
+  .cmp3 .ch{padding-top:26px!important;border-radius:20px 20px 0 0;margin-top:20px}
+  .cmp3 .ch.us{margin-top:0}
+  .cmp3 .last{border-radius:0 0 20px 20px;padding-bottom:26px!important}
+  .cmp3 .cv::before{content:attr(data-l);font:600 11px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .cmp3 .us.cv::before{color:#a99c84}
+  .cmp3 .cv b{font-size:24px}
+}
+.cmp-note{margin-top:36px}
+.cmp-agency{margin:10px 0 0;color:var(--text)}
+
+/* вопросы */
+.faq .list{margin:56px auto 0;max-width:820px;text-align:left}
+.faq details{border-bottom:1px solid var(--hairline)}
+.faq details:first-child{border-top:1px solid var(--hairline)}
+.faq summary{cursor:pointer;list-style:none;padding:22px 44px 22px 0;position:relative;font-weight:600;font-size:18px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:4px;top:15px;font:400 30px/1 var(--sans);color:var(--primary);transition:transform .25s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 22px;color:var(--text);max-width:66ch}
+
+/* заявка */
+.apply h2{color:#f6efe0}
+form{background:var(--canvas);color:var(--ink);border-radius:18px;padding:36px;display:grid;gap:20px;max-width:760px;margin:56px auto 0;text-align:left}
+@media (max-width:560px){form{padding:24px 20px}}
+.f{display:grid;gap:6px}
+.f label,.f legend{font-weight:600;font-size:15px}
+.f small{color:var(--muted);font-size:13px;font-weight:400}
+.f input[type=text],.f select,.f textarea{font:17px/1.4 var(--sans);color:var(--ink);background:#fff;border:1px solid rgba(36,26,20,.16);border-radius:11px;padding:12px 16px;width:100%;min-height:48px}
+.f textarea{min-height:120px;resize:vertical}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(47,75,60,.18)}
+fieldset.f{border:0;padding:0;margin:0}
+.radios{display:flex;gap:10px;flex-wrap:wrap}
+.radios label{font-weight:400;display:flex;gap:8px;align-items:center;border:1px solid rgba(36,26,20,.16);border-radius:999px;padding:10px 18px;cursor:pointer;background:#fff}
+.radios label:has(input:checked){border:2px solid var(--primary);padding:9px 17px}
+.radios input{accent-color:var(--primary)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--text)}
+.consent input{margin-top:3px;accent-color:var(--primary);width:18px;height:18px;flex:none}
+.form-msg{border-radius:11px;padding:14px 16px;font-size:15px}
+.form-msg.good{background:var(--ok-bg);color:var(--ok)}
+.form-msg.bad{background:#f8e3e0;color:#8d2a1f}
+.apply form .btn{background:var(--primary);border-color:var(--primary);color:#fff}
+.apply form .btn[disabled]{opacity:.6;cursor:wait}
+
+/* плавающая панель с ценой */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:25;height:64px;padding-bottom:env(safe-area-inset-bottom,0px);background:rgba(239,232,218,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--hairline);transform:translateY(105%);transition:transform .35s ease}
+.bar.show{transform:none}
+.bar .wrap{height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.bar p{margin:0;font-size:15px;color:var(--text)}
+.bar p b{color:var(--ink);font-variant-numeric:lining-nums}
+@media (max-width:560px){.bar .what{display:none}}
+
+/* телефон: пальцу нужна зона 44px, пилюли и ссылки визуально не меняются */
+@media (pointer:coarse){
+  .subnav .btn{position:relative}.subnav .btn::after{content:"";position:absolute;inset:-7px 0}
+  .link,.slink{position:relative}.link::before,.slink::before{content:"";position:absolute;inset:-13px -6px}
+  footer ul{line-height:1.4}footer li a{display:inline-flex;align-items:center;min-height:44px}
+}
+/* узкий экран: когда видна нижняя панель, вторая такая же кнопка в шапке не нужна */
+@media (max-width:560px){.subnav .btn{transition:opacity .25s,visibility .25s}.bar-on .subnav .btn{opacity:0;visibility:hidden}}
+
+/* подвал */
+footer{background:var(--parchment);color:#4d4238;font-size:12px;padding:56px 0 calc(40px + 64px + env(safe-area-inset-bottom,0px))}
+footer .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;padding-bottom:24px;border-bottom:1px solid var(--hairline)}
+@media (max-width:640px){footer .cols{grid-template-columns:1fr 1fr}}
+footer h4{margin:0 0 6px;font:600 13px var(--sans);color:var(--ink)}
+footer ul{list-style:none;margin:0;padding:0;line-height:2.2;font-size:13px}
+footer a{color:#4d4238;text-decoration:none}
+footer a:hover{text-decoration:underline}
+footer .legal{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:18px;color:var(--muted)}
+
+/* появление при прокрутке, мягко */
+.js .fx{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.js .fx.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.js .fx{opacity:1;transform:none;transition:none}.bar{transition:none}}
+.apply form a{color:var(--primary)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="crest-branch" viewBox="0 0 100 100">
+    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+      <path d="M50 88V70Q50 62 32 56M50 70Q50 62 68 56M32 56Q24 50 22 36M32 56Q38 48 40 34M68 56Q62 48 60 34M68 56Q76 50 78 36"/>
+    </g>
+    <circle cx="50" cy="89" r="6" fill="var(--acc)"/>
+    <g fill="none" stroke="currentColor" stroke-width="2.6"><circle cx="22" cy="28" r="6"/><circle cx="40" cy="26" r="6"/><circle cx="60" cy="26" r="6"/><circle cx="78" cy="28" r="6"/></g>
+    <g fill="currentColor"><circle cx="30" cy="12" r="2.2"/><circle cx="43" cy="10" r="2.2"/><circle cx="57" cy="10" r="2.2"/><circle cx="70" cy="12" r="2.2"/></g>
+  </symbol><symbol id="crest-shield" viewBox="8 4 84 96">
+    <defs><clipPath id="crs-clip"><path d="M14 10H86V50C86 74 70 88 50 96C30 88 14 74 14 50Z"/></clipPath></defs>
+    <path d="M14 10H86V50C86 74 70 88 50 96C30 88 14 74 14 50Z" fill="var(--fld)"/>
+    <g clip-path="url(#crs-clip)"><rect x="0" y="0" width="100" height="27" fill="var(--chief)"/><path d="M14 27H86" stroke="var(--chg)" stroke-width="1.4"/>
+      <g fill="var(--chg)"><circle cx="35" cy="18.5" r="2.6"/><circle cx="50" cy="18.5" r="2.6"/><circle cx="65" cy="18.5" r="2.6"/></g></g>
+    <path d="M14 10H86V50C86 74 70 88 50 96C30 88 14 74 14 50Z" fill="none" stroke="var(--edge)" stroke-width="2.6" stroke-linejoin="round"/>
+    <use href="#crest-branch" x="25" y="30" width="50" height="50" style="color:var(--chg);--acc:var(--root)"/>
+  </symbol><symbol id="crest-full" viewBox="0 2 120 128">
+    <g fill="var(--leaf)"><path d="M54.0 104.0Q4.0 84.0 26.0 20.0" fill="none" stroke="var(--leaf)" stroke-width="1.6"/><ellipse cx="43.1" cy="95.7" rx="4.6" ry="1.9" transform="rotate(-112 43.1 95.7)"/><ellipse cx="40.6" cy="100.2" rx="4.6" ry="1.9" transform="rotate(-188 40.6 100.2)"/><ellipse cx="35.9" cy="90.1" rx="4.6" ry="1.9" transform="rotate(-103 35.9 90.1)"/><ellipse cx="32.7" cy="94.2" rx="4.6" ry="1.9" transform="rotate(-179 32.7 94.2)"/><ellipse cx="30.3" cy="83.8" rx="4.6" ry="1.9" transform="rotate(-93 30.3 83.8)"/><ellipse cx="26.4" cy="87.2" rx="4.6" ry="1.9" transform="rotate(-169 26.4 87.2)"/><ellipse cx="26.1" cy="76.8" rx="4.6" ry="1.9" transform="rotate(-81 26.1 76.8)"/><ellipse cx="21.6" cy="79.3" rx="4.6" ry="1.9" transform="rotate(-157 21.6 79.3)"/><ellipse cx="23.4" cy="69.0" rx="4.6" ry="1.9" transform="rotate(-70 23.4 69.0)"/><ellipse cx="18.5" cy="70.7" rx="4.6" ry="1.9" transform="rotate(-146 18.5 70.7)"/><ellipse cx="22.0" cy="60.5" rx="4.6" ry="1.9" transform="rotate(-60 22.0 60.5)"/><ellipse cx="16.9" cy="61.3" rx="4.6" ry="1.9" transform="rotate(-136 16.9 61.3)"/><ellipse cx="21.9" cy="51.2" rx="4.6" ry="1.9" transform="rotate(-52 21.9 51.2)"/><ellipse cx="16.7" cy="51.1" rx="4.6" ry="1.9" transform="rotate(-128 16.7 51.1)"/><ellipse cx="23.1" cy="40.9" rx="4.6" ry="1.9" transform="rotate(-44 23.1 40.9)"/><ellipse cx="18.0" cy="40.2" rx="4.6" ry="1.9" transform="rotate(-120 18.0 40.2)"/><ellipse cx="25.6" cy="29.8" rx="4.6" ry="1.9" transform="rotate(-38 25.6 29.8)"/><ellipse cx="20.6" cy="28.5" rx="4.6" ry="1.9" transform="rotate(-114 20.6 28.5)"/>
+      <g transform="translate(120,0) scale(-1,1)"><path d="M54.0 104.0Q4.0 84.0 26.0 20.0" fill="none" stroke="var(--leaf)" stroke-width="1.6"/><ellipse cx="43.1" cy="95.7" rx="4.6" ry="1.9" transform="rotate(-112 43.1 95.7)"/><ellipse cx="40.6" cy="100.2" rx="4.6" ry="1.9" transform="rotate(-188 40.6 100.2)"/><ellipse cx="35.9" cy="90.1" rx="4.6" ry="1.9" transform="rotate(-103 35.9 90.1)"/><ellipse cx="32.7" cy="94.2" rx="4.6" ry="1.9" transform="rotate(-179 32.7 94.2)"/><ellipse cx="30.3" cy="83.8" rx="4.6" ry="1.9" transform="rotate(-93 30.3 83.8)"/><ellipse cx="26.4" cy="87.2" rx="4.6" ry="1.9" transform="rotate(-169 26.4 87.2)"/><ellipse cx="26.1" cy="76.8" rx="4.6" ry="1.9" transform="rotate(-81 26.1 76.8)"/><ellipse cx="21.6" cy="79.3" rx="4.6" ry="1.9" transform="rotate(-157 21.6 79.3)"/><ellipse cx="23.4" cy="69.0" rx="4.6" ry="1.9" transform="rotate(-70 23.4 69.0)"/><ellipse cx="18.5" cy="70.7" rx="4.6" ry="1.9" transform="rotate(-146 18.5 70.7)"/><ellipse cx="22.0" cy="60.5" rx="4.6" ry="1.9" transform="rotate(-60 22.0 60.5)"/><ellipse cx="16.9" cy="61.3" rx="4.6" ry="1.9" transform="rotate(-136 16.9 61.3)"/><ellipse cx="21.9" cy="51.2" rx="4.6" ry="1.9" transform="rotate(-52 21.9 51.2)"/><ellipse cx="16.7" cy="51.1" rx="4.6" ry="1.9" transform="rotate(-128 16.7 51.1)"/><ellipse cx="23.1" cy="40.9" rx="4.6" ry="1.9" transform="rotate(-44 23.1 40.9)"/><ellipse cx="18.0" cy="40.2" rx="4.6" ry="1.9" transform="rotate(-120 18.0 40.2)"/><ellipse cx="25.6" cy="29.8" rx="4.6" ry="1.9" transform="rotate(-38 25.6 29.8)"/><ellipse cx="20.6" cy="28.5" rx="4.6" ry="1.9" transform="rotate(-114 20.6 28.5)"/></g></g>
+    <g transform="translate(22,8) scale(.76)">
+      <defs><clipPath id="crf-clip"><path d="M14 10H86V50C86 74 70 88 50 96C30 88 14 74 14 50Z"/></clipPath></defs>
+      <path d="M14 10H86V50C86 74 70 88 50 96C30 88 14 74 14 50Z" fill="var(--fld)"/>
+      <g clip-path="url(#crf-clip)"><rect x="0" y="0" width="100" height="27" fill="var(--chief)"/><path d="M14 27H86" stroke="var(--chg)" stroke-width="1.6"/>
+        <g fill="var(--chg)"><circle cx="35" cy="18.5" r="2.8"/><circle cx="50" cy="18.5" r="2.8"/><circle cx="65" cy="18.5" r="2.8"/></g></g>
+      <path d="M14 10H86V50C86 74 70 88 50 96C30 88 14 74 14 50Z" fill="none" stroke="var(--edge)" stroke-width="3" stroke-linejoin="round"/>
+      <use href="#crest-branch" x="25" y="30" width="50" height="50" style="color:var(--chg);--acc:var(--root)"/>
+    </g>
+    <g><path d="M6 106L22 101V117L6 122L12 112Z M114 106L98 101V117L114 122L108 112Z" fill="var(--rib2)"/><path d="M22 101Q60 113 98 101V117Q60 129 22 117Z" fill="var(--rib)"/><path id="crf-rib" d="M26 111Q60 122 94 111" fill="none"/><text font-family="Lora,Georgia,serif" font-size="6.4" font-weight="600" letter-spacing=".8" fill="var(--ribt)" text-anchor="middle"><textPath href="#crf-rib" startOffset="50%" textLength="64" lengthAdjust="spacing">ПО ИСТОЧНИКАМ</textPath></text></g>
+  </symbol></svg>
+
+
+<header class="subnav" id="top">
+  <div class="wrap">
+    <a class="name" href="#"><svg class="crest" viewBox="0 2 120 128" aria-hidden="true"><use href="#crest-full"/></svg><span>Родо<span>словная</span></span></a>
+    <nav aria-label="Разделы">
+      <a href="#how">Как работаем</a>
+      <a href="#result">Результат</a>
+      <a href="#where">Где ищем</a>
+      <a href="#prices">Тарифы</a>
+      <a href="#gift">Подарок</a>
+      <a href="#faq">Вопросы</a>
+      <a class="btn" href="#apply" data-source="nav">Оставить заявку</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero on-dark" id="hero">
+    <div class="wrap">
+      <svg class="hero-crest" viewBox="0 2 120 128" role="img" aria-label="Герб «по источникам»"><use href="#crest-full"/></svg>
+      <p class="hero-kick">Уже искали в «Памяти народа» и&nbsp;Алисе?</p>
+      <h1 id="headline">Дальше ищем мы: <u>до&nbsp;XIX века</u> и&nbsp;по&nbsp;всем линиям семьи</h1>
+      <p class="lead">Бесплатные базы хорошо находят участников войны. Мы идём глубже: метрические книги и ревизские сказки XIX века. Генеалог сводит все линии в одно дерево и проверяет каждое прочтение, у каждого факта источник.</p>
+      <div class="ctas">
+        <a class="btn lg" href="#apply" data-source="hero">Оставить заявку</a>
+        <a class="btn lg ghost" href="#reveal">Как мы читаем записи</a>
+      </div>
+      <p class="price">Дерево с источниками за 7–14 дней, от <b>4 990 ₽</b>. Сначала бесплатно оценим анкету, платите, только если есть что искать.</p>
+    </div>
+  </section>
+
+  <section class="reveal" id="reveal" aria-label="Как мы читаем запись">
+    <div class="stage">
+      <div class="wrap stage-in">
+        <ol class="caps" aria-live="polite">
+          <li data-i="0"><b>1894 год.</b> Так выглядит запись о рождении в метрической книге.</li>
+          <li data-i="1"><b>ИИ читает почерк.</b> Разбирает старую орфографию, имена и даты.</li>
+          <li data-i="2"><b>Генеалог сверяет.</b> Каждое прочтение проверяет человек.</li>
+          <li data-i="3"><b>Факт попадает в дерево.</b> Со ссылкой на архивное дело.</li>
+        </ol>
+        <figure class="record big" id="bigrec" aria-label="Запись из метрической книги и её расшифровка. Пример, люди и шифр дела вымышлены">
+          <div class="hd"><span class="lbl-hand">Метрическая книга, часть первая: о родившихся</span><span class="lbl-clean">Расшифровка, сверено генеалогом</span><b>1894</b></div>
+          <div class="reading" id="reading">
+            <div class="ledger" aria-hidden="true">
+              <div class="th">№</div><div class="th">Мѣсяцъ и день</div><div class="th">Имя родившагося</div><div class="th">Званіе, имя, отчество и фамилія родителей</div>
+              <div class="td">47</div><div class="td">Мая 12</div><div class="td">Евдокія</div><div class="td">Деревни Заречья крестьянинъ Иванъ Петровъ Соколовъ и законная жена его Марія Андреева</div>
+            </div>
+            <p class="clean"><b>12 мая 1894</b> родилась <b>Евдокия</b>. Родители: <b>Иван Петрович Соколов</b>, крестьянин деревни <b>Заречье</b>, и его жена <b>Мария Андреевна</b>.</p>
+            <span class="scan" aria-hidden="true"></span>
+          </div>
+          <div class="ft"><span class="src">ГАТО, ф. 160, оп. 1, д. 1203, л. 45 об.</span><span class="stamp" role="img" aria-label="Печать: сверено генеалогом"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><filter id="ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.1" result="d"/><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="11" result="s"/><feColorMatrix in="s" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.1 1.7" result="m"/><feComposite in="d" in2="m" operator="in"/></filter><path id="st-top" d="M17,50 A33,33 0 0 1 83,50"/><path id="st-bot" d="M10,50 A40,40 0 0 0 90,50"/></defs><g filter="url(#ink)" fill="currentColor" stroke="currentColor"><circle cx="50" cy="50" r="47" fill="none" stroke-width="2.4"/><circle cx="50" cy="50" r="43.5" fill="none" stroke-width=".8"/><circle cx="50" cy="50" r="27" fill="none" stroke-width=".8"/><g stroke="none" font-family="Cormorant Garamond,Georgia,serif" font-weight="700" font-size="11" letter-spacing="1.8"><text><textPath href="#st-top" startOffset="50%" text-anchor="middle">СВЕРЕНО</textPath></text><text><textPath href="#st-bot" startOffset="50%" text-anchor="middle">ГЕНЕАЛОГОМ</textPath></text><circle cx="13.5" cy="50" r="1.7"/><circle cx="86.5" cy="50" r="1.7"/></g><path d="M38.5,50.5 l7.5,7.5 l15.5,-17" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g></svg></span></div>
+        </figure>
+        <div class="mini-tree" aria-label="Фрагмент дерева">
+          <span class="n">Иван Петрович Соколов<small>отец</small></span><span class="n">Мария Андреевна<small>мать</small></span>
+          <i class="ln" aria-hidden="true"></i>
+          <span class="n main">Евдокия Ивановна, 1894<small>пример, люди вымышлены</small></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="beyond tile t-parch" id="beyond">
+    <div class="wrap">
+      <p class="eyebrow fx">Если уже искали сами</p>
+      <h2 class="fx">Где заканчиваются бесплатные базы</h2>
+      <div class="bcols fx">
+        <div class="bcol">
+          <h3>«Память народа», ОБД «Мемориал»</h3>
+          <p>Великая Отечественная и Первая мировая: призыв, награды, потери.</p>
+          <p class="bend">Кто были родители солдата и откуда семья, там не узнать.</p>
+        </div>
+        <div class="bcol">
+          <h3>Алиса и «Моя семья»</h3>
+          <p>Быстрый поиск одного человека: ветерана по ФИО или записи в московских архивах.</p>
+          <p class="bend">Дерево из отдельных находок вы собираете сами.</p>
+        </div>
+        <div class="bcol us">
+          <h3>Мы</h3>
+          <p>Метрические книги и ревизские сказки XIX века. Все линии семьи в одном дереве. Генеалог проверяет каждое прочтение, у каждого факта источник.</p>
+          <a class="btn" href="#apply" data-source="beyond">Оставить заявку</a>
+        </div>
+      </div>
+      <p class="bnote fx">Пришлите то, что уже нашли: ссылки из «Памяти народа» и выписки помогут начать поиск не с нуля.</p>
+    </div>
+  </section>
+
+  <section class="how tile t-canvas center" id="how">
+    <div class="wrap">
+      <h2 class="fx">Как это работает</h2>
+      <ol class="fx">
+        <li><h3>Вы рассказываете</h3><p>Заполняете анкету: фамилии, имена, места, годы, семейные истории. Можно коротко, детали уточним.</p></li>
+        <li><h3>ИИ и генеалог ищут</h3><p>ИИ разбирает рассказ, составляет план и ищет в базах по всем родственникам сразу. Генеалог работает с архивами, проверяет находки и отделяет подтверждённое от предположений.</p></li>
+        <li><h3>Вы получаете отчёт</h3><p>Через 7 дней присылаем дерево, PDF-отчёт с источниками и план, где искать дальше.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="get t-parch" id="result" aria-label="Что вы получите">
+    <div class="gstage">
+      <div class="wrap gin">
+        <div class="gleft">
+          <h2>Что вы получите</h2>
+          <div class="glnav">          <ol class="gl-list"><li data-i="0"><button type="button" aria-label="Дерево семьи"><b>Дерево семьи</b><span>Цель: дойти до прадедов по всем линиям, о которых вы рассказали.</span></button></li><li data-i="1"><button type="button" aria-label="PDF-отчёт"><b>PDF-отчёт</b><span>У каждого факта ссылка на базу или архивный документ.</span></button></li><li data-i="2"><button type="button" aria-label="Честные пометки"><b>Честные пометки</b><span>Все находки отдельной таблицей, у каждой статус: «подтверждено документом» или «предположение». Открывается в Excel или Google Таблицах.</span></button></li><li data-i="3"><button type="button" aria-label="Война как одна из глав"><b>Война как одна из глав</b><span>Ищем всех родственников-фронтовиков из вашего рассказа, а не одного человека.</span></button></li><li data-i="4"><button type="button" aria-label="Документы и ссылки"><b>Документы и ссылки</b><span>Сканы всех найденных записей и ссылка на каждый источник. Всё, на чём построено дерево, остаётся у вас, можно проверить самим.</span></button></li><li data-i="5"><button type="button" aria-label="План, где искать дальше"><b>План, где искать дальше</b><span>Какие архивы и фонды, что и куда запросить.</span></button></li></ol></div>
+        </div>
+        <div class="gright">
+          <div class="device"><div class="win">
+            <div class="wbar"><span class="fn" id="fname">Дерево_Ершовы_Соколовы.pdf</span><span class="fine">пример, люди вымышлены</span></div>
+            <div class="wbody" id="wbody"><div class="ex" data-i="0" data-file="Дерево_Ершовы_Соколовы.pdf"><div class="tree" role="img" aria-label="Пример дерева семьи на четыре поколения">
+  <div class="tg"><span class="gl">Прапрадеды</span>
+    <div class="tr r4"><div class="tn may"><b>Иван Петрович Соколов</b><span>ок. 1866</span><small>д. Заречье</small><i>предположение · год по возрасту</i></div><div class="tn ok"><b>Мария Андреевна</b><span></span><small>д. Заречье</small><i>подтверждено</i></div><div class="tn find"><b>Василий Ершов</b><span></span><i>ищем · запрос в архив</i></div><div class="tn find"><b>Жена Василия</b><span></span><i>ищем · ревизские сказки</i></div></div>
+  </div>
+  <div class="tl l2" aria-hidden="true"><i></i><i></i></div>
+  <div class="tg"><span class="gl">Прадеды</span>
+    <div class="tr r2"><div class="tn ok"><b>Евдокия Ивановна Соколова</b><span>1894</span><small>д. Заречье</small><i>подтверждено · метрическая книга</i></div><div class="tn may"><b>Николай Васильевич Ершов</b><span>ок. 1890</span><small>д. Заречье</small><i>предположение</i></div></div>
+  </div>
+  <div class="tl l1" aria-hidden="true"><i></i></div>
+  <div class="tg"><span class="gl">Дедушка и бабушка</span>
+    <div class="tr r2"><div class="tn ok"><b>Пётр Николаевич Ершов</b><span>1921–1987</span><small>рядовой, «За отвагу»</small><i>подтверждено · Память народа</i></div><div class="tn own"><b>Анна Сергеевна Ершова</b><span>1925–2004</span><i>из анкеты</i></div></div>
+  </div>
+  <div class="tl l1" aria-hidden="true"><i></i></div>
+  <div class="tg"><span class="gl">Ваша мама</span>
+    <div class="tr r1"><div class="tn own"><b>Галина Петровна</b><span>1950</span><i>из анкеты</i></div></div>
+  </div>
+</div>
+            <div class="legend"><span><i class="ok"></i>подтверждено документом</span><span><i class="may"></i>предположение</span><span><i class="own"></i>из вашей анкеты</span><span><i class="find"></i>ищем дальше</span></div></div><div class="ex" data-i="1" data-file="Отчёт_Ершовы_Соколовы.pdf"><div class="pdfwrap"><div class="report" aria-label="Пример страницы отчёта">
+            <div class="rh"><b>Линия Соколовых и Ершовых</b><span class="src">стр. 3 из 14</span></div>
+            <div class="gen">Прапрадед</div>
+            <div class="row"><span class="who">Иван Петрович Соколов, около 1866</span><span class="chip may">предположение</span><span class="what">Возраст выведен из записи о рождении дочери. Нужна исповедная ведомость за 1890-е.</span></div>
+            <div class="gen">Прабабушка</div>
+            <div class="row"><span class="who">Евдокия Ивановна, 1894</span><span class="chip ok">подтверждено</span><span class="src">ГАТО, ф. 160, оп. 1, д. 1203, л. 45 об.</span></div>
+            <div class="gen">Дедушка</div>
+            <div class="row"><span class="who">Пётр Николаевич Ершов, 1921</span><span class="chip ok">подтверждено</span><span class="what">Рядовой, медаль «За отвагу», 1943.</span><span class="src">Память народа, приказ о награждении</span></div>
+          </div></div></div><div class="ex" data-i="2" data-file="Находки_Ершовы_Соколовы.xlsx"><div class="db">
+  <div class="dbbar"><span class="pill on">Все, 9</span><span class="pill">Подтверждено, 5</span><span class="pill">Предположения, 2</span><span class="pill">Ищем, 1</span></div>
+  <div class="dbscroll"><table>
+    <thead><tr><th>№</th><th>Человек</th><th>Событие</th><th>Источник</th><th>Статус</th></tr></thead>
+    <tbody><tr><td class="n">1</td><td><b>Галина Петровна Ершова</b><small>мама</small></td><td>рождение<small>1950</small></td><td class="src nl">из анкеты</td><td><span class="st own">из анкеты</span></td></tr><tr><td class="n">2</td><td><b>Пётр Николаевич Ершов</b><small>дедушка</small></td><td>награждение медалью «За отвагу»<small>1943</small></td><td class="src">Память народа, приказ о награждении</td><td><span class="st ok">подтверждено</span></td></tr><tr><td class="n">3</td><td><b>Пётр Николаевич Ершов</b><small>дедушка</small></td><td>рождение<small>1921 · д. Заречье</small></td><td class="src">Память народа, учётная карточка</td><td><span class="st ok">подтверждено</span></td></tr><tr><td class="n">4</td><td><b>Анна Сергеевна Ершова</b><small>бабушка</small></td><td>рождение<small>1925</small></td><td class="src nl">из анкеты</td><td><span class="st own">из анкеты</span></td></tr><tr><td class="n">5</td><td><b>Евдокия Ивановна Соколова</b><small>прабабушка</small></td><td>рождение<small>12.05.1894 · д. Заречье</small></td><td class="src">ГАТО, ф. 160, оп. 1, д. 1203, л. 45 об.</td><td><span class="st ok">подтверждено</span></td></tr><tr><td class="n">6</td><td><b>Николай Васильевич Ершов</b><small>прадед</small></td><td>рождение<small>ок. 1890 · д. Заречье</small></td><td class="src nl">возраст в записи о браке</td><td><span class="st may">предположение</span></td></tr><tr><td class="n">7</td><td><b>Иван Петрович Соколов</b><small>прапрадед</small></td><td>отец в записи о рождении дочери<small>1894 · д. Заречье</small></td><td class="src">ГАТО, ф. 160, оп. 1, д. 1203, л. 45 об.</td><td><span class="st ok">подтверждено</span></td></tr><tr><td class="n">8</td><td><b>Иван Петрович Соколов</b><small>прапрадед</small></td><td>год рождения<small>ок. 1866</small></td><td class="src nl">вычислен по возрасту</td><td><span class="st may">предположение</span></td></tr><tr><td class="n">9</td><td><b>Василий Ершов</b><small>прапрадед</small></td><td>—<small></small></td><td class="src nl">запрос в архив отправлен</td><td><span class="st find">ищем</span></td></tr></tbody>
+  </table></div>
+</div></div><div class="ex" data-i="3" data-file="Военный_путь_Ершовых.pdf"><div class="war">
+  <div class="wtop"><b>Военный путь семьи</b><span>2 человека · 5 событий · 4 подтверждены документами</span></div>
+  <div class="wgrid">
+    <div class="wax"><span style="grid-column:2">1940</span><span style="grid-column:3">1941</span><span style="grid-column:4">1942</span><span style="grid-column:5">1943</span><span style="grid-column:6">1944</span><span style="grid-column:7">1945</span></div>
+    <div class="wlane" style="grid-row:2"><b>Пётр Николаевич Ершов</b><small>1921, дедушка</small></div>
+    <div class="wline" style="grid-row:2"></div>
+    <div class="wev" style="grid-column:2;grid-row:2"><i></i><span data-y="1940">Призван</span></div><div class="wev" style="grid-column:5;grid-row:2"><i></i><span data-y="1943">Медаль «За отвагу»</span></div><div class="wev wmay" style="grid-column:6;grid-row:2"><i></i><span data-y="1944">Ранен</span></div>
+    <div class="wlane" style="grid-row:3"><b>Алексей Николаевич Ершов</b><small>1923, его брат</small></div>
+    <div class="wline short" style="grid-row:3"></div>
+    <div class="wev" style="grid-column:3;grid-row:3"><i></i><span data-y="1941">Призван</span></div><div class="wev" style="grid-column:4;grid-row:3"><i></i><span data-y="1942">Пропал без вести</span></div>
+  </div>
+  <div class="wfoot">
+    <div class="wdoc"><b>Наградной лист, 1943</b><span>Память народа · скан приложен к отчёту</span></div>
+    <div class="wdoc"><b>Донесение о потерях, 1942</b><span>ОБД Мемориал · по нему готов запрос в Красный Крест</span></div>
+  </div>
+  <div class="wleg"><span><i></i>подтверждено</span><span><i class="wm"></i>предположение</span></div>
+</div></div><div class="ex" data-i="4" data-file="Документы_Ершовы_Соколовы/"><div class="docs">
+  <div class="dtop"><b>Папка с документами</b><span>23 файла · сканы, выписки и ссылки</span></div>
+  <div class="files"><div class="file"><span class="fth ph"><img src="img/perm1857.jpg" alt="" loading="lazy"></span><b>Метрическая_<wbr>книга_<wbr>1894_<wbr>л45об.jpg</b><a class="slink" href="#" tabindex="-1" onclick="return false">ГАТО, ф. 160, оп. 1, д. 1203</a></div><div class="file"><span class="fth ph"><img src="img/perm1824.jpg" alt="" loading="lazy"></span><b>Исповедная_<wbr>ведомость_<wbr>1897.jpg</b><a class="slink" href="#" tabindex="-1" onclick="return false">ГАТО, ф. 160, оп. 1, д. 1190</a></div><div class="file"><span class="fth dc"><em>Н</em><i></i><i></i><i></i></span><b>Наградной_<wbr>лист_<wbr>1943.jpg</b><a class="slink" href="#" tabindex="-1" onclick="return false">Память народа</a></div><div class="file"><span class="fth dc"><em>К</em><i></i><i></i><i></i></span><b>Учётная_<wbr>карточка_<wbr>1940.jpg</b><a class="slink" href="#" tabindex="-1" onclick="return false">Память народа</a></div><div class="file"><span class="fth dc"><em>Д</em><i></i><i></i><i></i></span><b>Донесение_<wbr>о_<wbr>потерях_<wbr>1942.pdf</b><a class="slink" href="#" tabindex="-1" onclick="return false">ОБД Мемориал</a></div><div class="file"><span class="fth lk">↗</span><b>Ссылки_<wbr>на_<wbr>источники.html</b><a class="slink" href="#" tabindex="-1" onclick="return false">все 23 ссылки списком</a></div></div>
+  <p class="dnote">Каждый факт в дереве и отчёте ведёт к своему документу: открыли ссылку, увидели запись в архиве.</p>
+</div></div><div class="ex" data-i="5" data-file="План_поиска.pdf"><div class="plan">
+  <div class="wh"><b>Где искать дальше</b><span>что даст каждый шаг и сколько ждать</span></div>
+  <ol>
+    <li><div><b>Исповедные ведомости прихода, 1890-е</b><span>Уточнят год рождения Ивана Петровича Соколова.</span><span class="src">ГАТО, фонд духовной консистории</span></div><em>оцифровано</em></li>
+    <li><div><b>Ревизские сказки 1858 года</b><span>Могут дать ещё одно поколение Соколовых.</span><span class="src">ГАТО, ревизские сказки уезда</span></div><em>оцифровано</em></li>
+    <li><div><b>Запрос о Василии Ершове</b><span>Запись о браке сына, Николая Васильевича.</span><span class="src">Региональный архив, письменный запрос</span></div><em>ответ за 1–4 мес.</em></li>
+    <li><div><b>Судьба Алексея Ершова</b><span>Текст запроса готов, отправить можно бесплатно.</span><span class="src">Центр розыска Российского Красного Креста</span></div><em>бесплатно</em></li>
+  </ol>
+</div></div></div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="where tile t-dark" id="where">
+    <div class="wrap where-hd">
+      <h2 class="fx" style="color:#f6efe0">Где мы ищем</h2>
+      <div class="rbtns"><button type="button" class="rb" id="r-prev" aria-label="Назад"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" class="rb" id="r-next" aria-label="Вперёд"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></div>
+    </div>
+    <div class="rail fx" id="rail" tabindex="0" aria-label="Источники, листаются вбок">
+      <figure class="slide">
+        <div class="vis v-war" aria-hidden="true">
+          <div class="card-doc">
+            <div class="cd-h">Учётная карточка <span>пример</span></div>
+            <dl>
+              <div><dt>Фамилия</dt><dd>Ершов</dd></div>
+              <div><dt>Имя, отчество</dt><dd>Пётр Николаевич</dd></div>
+              <div><dt>Год рождения</dt><dd>1921</dd></div>
+              <div><dt>Воинское звание</dt><dd>рядовой</dd></div>
+              <div><dt>Награды</dt><dd>медаль «За отвагу», 1943</dd></div>
+            </dl>
+          </div>
+        </div>
+        <figcaption><b>Память народа, ОБД Мемориал, Подвиг народа.</b> Государственные базы об участниках Великой Отечественной и Первой мировой: призыв, награды, потери, захоронения.</figcaption>
+      </figure>
+      <figure class="slide">
+        <div class="vis v-photo"><img src="img/perm1824.jpg" alt="Метрическая книга Петропавловского собора в Перми, 1824 год" width="589" height="900" loading="lazy"></div>
+        <figcaption><b>Федеральные архивы.</b> Оцифрованные дореволюционные фонды через виртуальный читальный зал. На фото метрическая книга 1824 года.</figcaption>
+      </figure>
+      <figure class="slide">
+        <div class="vis v-photo wide"><img src="img/perm1857.jpg" alt="Разворот метрической книги, часть об умерших, Пермь, 1857 год" width="1280" height="1028" loading="lazy"></div>
+        <figcaption><b>Региональные архивы.</b> Метрические книги и ревизские сказки, если книги вашего прихода оцифрованы. На фото разворот книги 1857 года.</figcaption>
+      </figure>
+      <figure class="slide">
+        <div class="vis v-letter" aria-hidden="true">
+          <div class="letter">
+            <p class="to">В Центр розыска<br>Российского Красного Креста</p>
+            <p class="subj">Запрос о судьбе</p>
+            <p>Прошу сообщить сведения о судьбе Ершова Алексея Николаевича, 1923 года рождения, пропавшего без вести в 1942 году.</p>
+            <p class="sign">пример запроса, люди вымышлены</p>
+          </div>
+        </div>
+        <figcaption><b>Центр розыска Российского Красного Креста.</b> Судьбы людей в годы войны. Текст запроса готовим мы.</figcaption>
+      </figure>
+    </div>
+    <div class="wrap rail-ctl">
+      <p class="note">Поиск в метрических книгах, ревизских сказках и запросы в архивы и Красный Крест входят в тариф Расширенный.</p>
+    </div>
+  </section>
+
+  <section class="prices tile t-parch center" id="prices">
+    <div class="wrap">
+      <h2 class="fx">Тарифы</h2>
+      <p class="lead fx">Сначала бесплатно оценим анкету. Платите, только если есть что искать.</p>
+      <div class="tiers fx">
+        <div class="tier">
+          <span class="kick"></span>
+          <h3>Базовый</h3>
+          <div><div class="p">4 990 ₽</div><div class="term">7 дней</div></div>
+          <ul>
+            <li>Глубина: до прадедов, обычно это конец XIX века</li>
+            <li>Поиск по всем родственникам из вашего рассказа</li>
+            <li>PDF-отчёт с источником у каждого факта</li>
+            <li>Проверка генеалогом</li>
+            <li>Вернём деньги, если не найдём ни одной новой записи о предках</li>
+          </ul>
+          <a class="btn ghost" href="#apply" data-tariff="Базовый" data-source="tariff">Оставить заявку</a>
+        </div>
+        <div class="tier main">
+          <span class="kick">к юбилею и дню рождения</span>
+          <h3>Подарочный</h3>
+          <div><div class="p">6 990 ₽</div><div class="term">сертификат в течение суток после оплаты, исследование 7 дней после анкеты получателя</div></div>
+          <ul>
+            <li>Всё из Базового</li>
+            <li>Красивый сертификат придёт в течение суток после оплаты, успеет к дню рождения</li>
+            <li>Анкету заполняет тот, кому дарите</li>
+            <li>PDF-книжка «История семьи»</li>
+            <li>Постер-древо A2 с доставкой по России: +2 990 ₽ по желанию</li>
+          </ul>
+          <a class="btn" href="#apply" data-tariff="Подарочный" data-whom="gift" data-source="tariff">Оставить заявку на подарок</a>
+        </div>
+        <div class="tier">
+          <span class="kick"></span>
+          <h3>Расширенный</h3>
+          <div><div class="p">14 990 ₽</div><div class="term">онлайн-часть 14 дней</div></div>
+          <ul>
+            <li>Всё из Базового</li>
+            <li>Глубже в XIX век: 4–5 поколений, обычно до середины века, по 2 линиям на выбор</li>
+            <li>Поиск в метрических книгах и ревизских сказках</li>
+            <li>До 2 запросов в архивы или Красный Крест, оплата включена</li>
+            <li>Карта мест, где жила семья</li>
+            <li>Звонок 30 минут с генеалогом</li>
+            <li>Архивы отвечают за 1–4 месяца, дополнение к отчёту пришлём бесплатно</li>
+          </ul>
+          <a class="btn ghost" href="#apply" data-tariff="Расширенный" data-source="tariff">Оставить заявку</a>
+        </div>
+      </div>
+      <p class="sub-door">Хотите искать сами с ИИ-помощником по подписке? Это в разработке. <button class="link" type="button" data-tariff="Подписка" data-source="subscription">Сообщить о запуске</button></p>
+      <p class="guarantee fine">«Новая запись» значит документ или запись в базе о вашем предке, которых не было в вашей анкете. Перед оплатой мы бесплатно оцениваем анкету. Если шансов мало, честно скажем и не возьмём заказ. В Расширенном возврат за вычетом уже оплаченных архивных запросов.</p>
+    </div>
+  </section>
+
+  <section class="gift-b tile t-dark-3" id="gift">
+    <div class="wrap">
+      <p class="eyebrow fx">Подарок</p>
+      <h2 class="gh fx">Подарите родителям историю их&nbsp;семьи.</h2>
+      <p class="glead fx">Сертификат придёт в течение суток после оплаты: распечатайте или отправьте в мессенджер. Мама или дедушка заполнят анкету, когда удобно, и <strong>через 7 дней получат дерево и PDF-книжку «История семьи».</strong> Постер A2 можно добавить по желанию.</p>
+      <div class="gcols">
+        <div class="fx">
+          <div class="stats">
+            <div><b>24 ч</b><span>сертификат после оплаты</span></div>
+            <div><b>7 дней</b><span>исследование после анкеты</span></div>
+            <div><b>6 990 ₽</b><span>сертификат, дерево и книжка</span></div>
+            <div><b>+2 990 ₽</b><span>постер A2 с доставкой по России</span></div>
+          </div>
+          <a class="btn lg" href="#apply" data-tariff="Подарочный" data-whom="gift" data-source="gift">Заказать подарок</a>
+          <p class="gfine">Постер печатаем после исследования, он приходит позже сертификата. Подходит к дню рождения и юбилею в любое время года, а ещё к 8 марта и 23 февраля.</p>
+        </div>
+        <div class="fx"><div class="cert" aria-label="Пример подарочного сертификата">
+        <svg class="cert-crest" viewBox="0 2 120 128" aria-hidden="true"><use href="#crest-full"/></svg>
+        <span class="k">Подарочный сертификат</span>
+        <span class="t">История семьи Соколовых</span>
+        <span class="hand">Дорогой маме, чтобы мы узнали, откуда мы</span>
+        <span class="src">№ 0001 · дерево и книжка «История семьи»</span>
+      </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare tile t-canvas center">
+    <div class="wrap">
+      <h2 class="fx">Сравните</h2>
+      <div class="cmpw fx"><div class="cmp3"><div class="usbg" aria-hidden="true"></div><div class="e" style="--c:1;--r:1"></div><div class="ch us" style="--c:2;--r:1;--o:0"><h3>Мы</h3><p>Дерево с источниками за неделю, каждое прочтение проверяет генеалог.</p><div class="ct"><a class="btn" href="#apply" data-source="compare">Оставить заявку</a></div></div><div class="ch" style="--c:3;--r:1;--o:10"><h3>Частный генеалог</h3><p>Глубокое исследование с выездами в архивы.</p></div><div class="ch" style="--c:4;--r:1;--o:20"><h3>Искать самому</h3><p>Бесплатные базы, если есть годы и терпение.</p></div><div class="rl" style="--c:1;--r:2">Цена</div><div class="cv us" data-l="Цена" style="--c:2;--r:2;--o:1"><b>4 990–14 990 ₽</b><span>фиксированная цена тарифа</span></div><div class="cv" data-l="Цена" style="--c:3;--r:2;--o:11"><b>от 60 тыс. ₽</b><span>за одну ветвь</span></div><div class="cv" data-l="Цена" style="--c:4;--r:2;--o:21"><b>базы бесплатно</b><span>запросы и доступ 30–50 тыс. ₽ в год</span></div><div class="rl" style="--c:1;--r:3">Срок</div><div class="cv us" data-l="Срок" style="--c:2;--r:3;--o:2"><b>7–14 дней</b><span>ответы архивов приходят позже</span></div><div class="cv" data-l="Срок" style="--c:3;--r:3;--o:12"><b>от полугода</b><span>срок исследования</span></div><div class="cv" data-l="Срок" style="--c:4;--r:3;--o:22"><b>1,5–3 года</b><span>срок поиска</span></div><div class="rl" style="--c:1;--r:4">Кто ищет</div><div class="cv us" data-l="Кто ищет" style="--c:2;--r:4;--o:3"><b>ИИ и генеалог</b></div><div class="cv" data-l="Кто ищет" style="--c:3;--r:4;--o:13"><b>Генеалог</b></div><div class="cv" data-l="Кто ищет" style="--c:4;--r:4;--o:23"><b>Вы сами</b></div><div class="rl" style="--c:1;--r:5">Источники</div><div class="cv us" data-l="Источники" style="--c:2;--r:5;--o:4"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21"/><path d="M15 24.5l6 6 12-13"/></svg><span>ссылка у каждого факта</span></div><div class="cv" data-l="Источники" style="--c:3;--r:5;--o:14"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21"/><path d="M15 24.5l6 6 12-13"/></svg><span>ссылка у каждого факта</span></div><div class="cv" data-l="Источники" style="--c:4;--r:5;--o:24"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 38l4-12 18-18 8 8-18 18z"/><path d="M28 12l8 8"/></svg><span>как сами запишете</span></div><div class="rl" style="--c:1;--r:6">Глубина</div><div class="cv us last" data-l="Глубина" style="--c:2;--r:6;--o:5"><b>Базы и архивы</b><span>открытые базы, оцифрованные архивы, до 2 запросов</span></div><div class="cv last" data-l="Глубина" style="--c:3;--r:6;--o:15"><b>Глубже</b><span>выезды в архивы, книги о роде</span></div><div class="cv last" data-l="Глубина" style="--c:4;--r:6;--o:25"><b>Сколько хватит сил</b></div></div></div>
+      <p class="cmp-note fine">Цены и сроки генеалогов и самостоятельного поиска по публикациям СМИ 2021–2023 годов: profile.ru, quasa.io.</p>
+      <p class="cmp-agency">Нужна история рода до XVIII века или документы для гражданства? Это работа архивного агентства. Подскажем, к кому обратиться.</p>
+    </div>
+  </section>
+
+  <section class="faq tile t-parch center" id="faq">
+    <div class="wrap">
+      <h2 class="fx">Вопросы</h2>
+      <div class="list fx">
+        
+        <details><summary>Что если вы ничего не найдёте?</summary><p>До оплаты бесплатно оценим анкету. Если шансов мало, так и скажем. Если взяли заказ и не нашли ни одной новой записи о предках, вернём деньги.</p></details>
+        <details><summary>Почему так быстро и недорого?</summary><p>ИИ берёт рутину: разбирает рассказ, строит план поиска, ищет по базам, помогает читать старый почерк. Генеалог работает с архивами и подтверждает каждое чтение. Командировок и книг о роде мы не делаем.</p></details>
+        <details><summary>Вы гарантируете, что найдёте прадедов?</summary><p>Нет. Это зависит от того, сохранились ли документы и оцифрованы ли они. Мы гарантируем честный отчёт: что найдено, на каком основании и где искать дальше.</p></details>
+        <details><summary>Что нужно от меня?</summary><p>Всё, что знаете: фамилии, имена, места, примерные годы, семейные истории. Подойдут фото документов и писем. Чем больше деталей, тем дальше мы пройдём.</p></details>
+        <details><summary>Что вы делаете с моими данными?</summary><p>Используем только для вашего исследования. Отчёт получаете только вы, мы его не публикуем. Удалим данные по вашему запросу. О живых родственниках достаточно имён и степени родства.</p></details>
+        <details><summary>Можно ли получить документы для гражданства или репатриации?</summary><p>Нет. Для этого нужны заверенные архивные справки, это работа агентства. Подскажем, к кому обратиться.</p></details>
+        <details><summary>Как оплатить?</summary><p>После заявки свяжемся, оценим анкету и пришлём ссылку на оплату. Срок 7 дней считаем с оплаты и заполненной анкеты.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="apply tile t-dark center" id="apply">
+    <div class="wrap">
+      <h2 class="fx">Узнайте, кем были ваши прадеды</h2>
+      <p class="lead fx">Оставьте заявку. Свяжемся в течение дня, бесплатно оценим анкету и расскажем, что можно найти. Оплата только после этого.</p>
+      <form id="lead" action="https://formspree.io/f/xbgogbqa" method="POST" novalidate>
+        <div class="two">
+          <div class="f"><label for="f-name">Имя</label><input type="text" id="f-name" name="Имя" autocomplete="name" required><small>Как к вам обращаться</small></div>
+          <div class="f"><label for="f-contact">Контакт</label><input type="text" id="f-contact" name="Контакт" autocomplete="tel" required><small>Телефон, Telegram или email</small></div>
+        </div>
+        <div class="f"><label for="f-tariff">Тариф</label>
+          <select id="f-tariff" name="Тариф" required>
+            <option value="Базовый">Базовый, 4 990 ₽</option>
+            <option value="Подарочный">Подарочный, 6 990 ₽</option>
+            <option value="Расширенный">Расширенный, 14 990 ₽</option>
+            <option value="Подписка">Подписка (сообщить о запуске)</option>
+          </select>
+        </div>
+        <label class="consent poster-opt" for="f-poster"><input type="checkbox" id="f-poster" name="Постер A2" value="да"> <span>Добавить постер-древо A2 с доставкой, +2 990 ₽</span></label>
+        <fieldset class="f"><legend>Для кого</legend>
+          <div class="radios">
+            <label><input type="radio" name="Для кого" value="Себе" id="f-self" checked> Себе</label>
+            <label><input type="radio" name="Для кого" value="В подарок" id="f-gift"> В подарок</label>
+          </div>
+        </fieldset>
+        <div class="f"><label for="f-known">Что знаете о предках <small>(можно заполнить позже)</small></label>
+          <textarea id="f-known" name="Что знаете о предках" placeholder="Фамилии, имена, места, годы, истории"></textarea>
+          <small>Об умерших предках пишите подробно, о живых родственниках только имена и степень родства.</small>
+        </div>
+        <div class="f"><label for="f-focus">Что важнее всего <small>(необязательно)</small></label>
+          <select id="f-focus" name="Что важнее всего">
+            <option value="">Не выбрано</option>
+            <option>Дерево семьи</option>
+            <option>Военная история</option>
+            <option>Дореволюционные предки (метрические книги)</option>
+          </select>
+        </div>
+        <label class="consent"><input type="checkbox" id="f-consent" name="Согласие на ПДн" value="да" required> <span>Даю согласие на обработку персональных данных на условиях <a href="consent.html" target="_blank">Согласия</a> и <a href="privacy.html" target="_blank">Политики конфиденциальности</a>.</span></label>
+        <input type="hidden" name="Заголовок" id="f-variant" value="A">
+        <input type="hidden" name="Кнопка" id="f-source" value="direct">
+        <input type="hidden" name="UTM" id="f-utm" value="">
+        <input type="hidden" name="_subject" value="Новая заявка: Родословная">
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+        <div id="f-msg" class="form-msg" hidden role="status"></div>
+        <button class="btn lg" type="submit" id="f-submit">Отправить заявку</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<div class="bar" id="bar" aria-hidden="true">
+  <div class="wrap">
+    <p><span class="what">Дерево семьи с источниками за 7 дней, </span>от <b>4 990 ₽</b></p>
+    <a class="btn" href="#apply" data-source="bar" tabindex="-1">Оставить заявку</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-brand"><svg viewBox="0 2 120 128" aria-hidden="true"><use href="#crest-full"/></svg><span>Родо<span>словная</span></span></div>
+    <div class="cols">
+      <div><h4>Разделы</h4><ul><li><a href="#how">Как это работает</a></li><li><a href="#where">Где мы ищем</a></li><li><a href="#prices">Тарифы</a></li><li><a href="#gift">Подарок</a></li><li><a href="#faq">Вопросы</a></li></ul></div>
+      <div><h4>Документы</h4><ul><li><a href="privacy.html">Политика конфиденциальности</a></li><li><a href="consent.html">Согласие на обработку данных</a></li></ul></div>
+      <div><h4>Фото метрических книг</h4><ul><li><a href="https://commons.wikimedia.org/wiki/File:Метрическая_книга_Петропавловский_собор_Перми_1824_заглавие.jpg" target="_blank" rel="noopener">Пермь, 1824</a></li><li><a href="https://commons.wikimedia.org/wiki/File:Метрическая_книга_Петропавловский_собор_в_Перми_1857-05_умершие.jpg" target="_blank" rel="noopener">Пермь, 1857</a></li></ul><p>Wikimedia Commons, общественное достояние</p></div>
+    </div>
+    <div class="legal"><span>© 2026 Родословная</span><span>Примеры записей и отчёта на сайте вымышлены</span></div>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+(function(){
+  // A/B заголовка: ?h=b или ?h=c, иначе A
+  var H={a:'Дальше ищем мы: <u>до&nbsp;XIX века</u> и&nbsp;по&nbsp;всем линиям семьи',
+         b:'Узнайте, кем были ваши прадеды. Отчёт <u>с&nbsp;источниками</u> за 7 дней',
+         c:'Подарите родителям <u>историю их семьи</u>'};
+  var q=new URLSearchParams(location.search), v=(q.get('h')||'a').toLowerCase();
+  if(!H[v]) v='a';
+  document.getElementById('headline').innerHTML=H[v];
+  document.getElementById('f-variant').value=v.toUpperCase();
+  var utm=[];q.forEach(function(val,key){ if(key.indexOf('utm_')===0) utm.push(key+'='+val); });
+  document.getElementById('f-utm').value=utm.join('&');
+
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // прилипающий экран: рукопись -> расшифровка -> штамп -> дерево
+  var sec=document.getElementById('reveal'), rd=document.getElementById('reading'), big=document.getElementById('bigrec');
+  var caps=[].slice.call(document.querySelectorAll('.caps li')), tree=document.querySelector('.mini-tree');
+  function setStep(i){ caps.forEach(function(c,k){ c.classList.toggle('on',k===i); }); tree.classList.toggle('on',i===3); }
+  // низкие экраны (телефон боком): статичная раскладка, как при reduced-motion
+  var stg=sec.querySelector('.stage'), stin=sec.querySelector('.stage-in'), capsEl=sec.querySelector('.caps'), mqLow=matchMedia('(max-height:500px)'), geo=null, step=-1;
+  function showAll(){ big.classList.add('done'); rd.style.setProperty('--p','1'); big.style.removeProperty('--k'); big.style.removeProperty('--rh'); tree.style.marginBottom=''; caps.forEach(function(c){c.classList.add('on');}); tree.classList.add('on'); step=-1; }
+  // карточка и дерево должны поместиться в экран: считаем масштаб карточки до и на последнем шаге
+  function measure(){
+    var cs=getComputedStyle(stg), avail=stg.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+    var ic=getComputedStyle(stin), one=ic.gridTemplateColumns.trim().split(/\s+/).length<2, G=parseFloat(ic.rowGap)||0;
+    var ch=big.offsetHeight, cp=capsEl.offsetHeight, th=tree.offsetHeight;
+    function k(room){ return Math.max(.4,Math.min(1,room/ch)); }
+    geo={ch:ch, pre:k(one?avail-cp-G:avail), fin:k(one?avail-cp-2*G-th:avail-G-th), th:th+G};
+  }
+  function place(){ if(!geo) return; var fin=step==='3d';
+    big.style.setProperty('--rh',geo.ch+'px'); big.style.setProperty('--k',(fin?geo.fin:geo.pre).toFixed(3));
+    tree.style.marginBottom=fin?'':(-Math.round(geo.th))+'px'; }  // до последнего шага дерево не занимает места, карточка по центру
+  if(!reduce){
+    var ticking=false;
+    function upd(){ ticking=false;
+      if(mqLow.matches){ showAll(); return; }
+      var r=sec.getBoundingClientRect(), total=sec.offsetHeight-innerHeight;
+      var t=Math.max(0,Math.min(1,-r.top/total));
+      var s=Math.min(1,t/0.15);
+      var p=Math.max(0,Math.min(1,(t-0.18)/0.42));
+      big.style.setProperty('--s',s.toFixed(3));
+      rd.style.setProperty('--p',p.toFixed(3));
+      var d=t>=0.64, i=t<0.18?0:t<0.62?1:t<0.8?2:3, key=i+(d?'d':'');
+      big.classList.toggle('done',d);
+      if(key!==step || !geo){ step=key; setStep(i); measure(); place(); }
+    }
+    function remeasure(){ if(mqLow.matches){ showAll(); return; } geo=null; upd(); }
+    addEventListener('scroll',function(){ if(!ticking){ticking=true;requestAnimationFrame(upd);} },{passive:true});
+    addEventListener('resize',remeasure);
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
+    upd();
+  } else showAll();
+
+
+  // что вы получите: пункты слева, пример справа, смена при прокрутке
+  (function(){
+    var g=document.getElementById('result'), lis=[].slice.call(g.querySelectorAll('.gl-list li')), exs=[].slice.call(g.querySelectorAll('.ex'));
+    var body=document.getElementById('wbody'), fn=document.getElementById('fname'), mq=matchMedia('(min-width:981px)'), mqs=matchMedia('(min-width:981px) and (min-height:700px)'), cur=-1, wide=null;
+    // прокрутка внутри примера: мягкое затухание снизу, пока там есть ещё что-то
+    function fade(x){ if(x.scrollHeight>x.clientHeight+4 && x.scrollTop+x.clientHeight<x.scrollHeight-4) x.setAttribute('data-more',''); else x.removeAttribute('data-more'); }
+    exs.forEach(function(x){ x.addEventListener('scroll',function(){ fade(x); },{passive:true}); });
+    function setI(i){ if(i===cur) return; cur=i; lis.forEach(function(l,k){ l.classList.toggle('on',k===i); }); exs.forEach(function(x,k){ x.classList.toggle('on',k===i); x.setAttribute('aria-hidden',k===i?'false':'true'); }); fn.textContent=exs[i].dataset.file; exs.forEach(fade); }
+    // широкий экран: список слева и окно справа; липнет и листается прокруткой, только если хватает высоты, иначе переключается нажатием
+    function layout(){
+      var w=mq.matches, st=w && mqs.matches && !reduce, was=g.classList.contains('sticky');
+      g.classList.toggle('sticky',st);
+      if(w===wide){ if(w){ if(st!==was){ cur=-1; tick(); } if(cur<0) setI(0); exs.forEach(fade); } return; }
+      wide=w;
+      exs.forEach(function(x,k){
+        if(w){ body.appendChild(x); var m=lis[k].querySelector('.mwin'); if(m) m.remove(); }
+        else { var m=document.createElement('div'); m.className='win mwin'; m.innerHTML='<div class="wbar"><span class="fn">'+x.dataset.file+'</span><span class="fine">пример</span></div>'; m.appendChild(x); lis[k].appendChild(m); x.classList.add('on'); }
+      });
+      if(!w){ lis.forEach(function(l){ l.classList.add('on'); }); exs.forEach(function(x){ x.removeAttribute('data-more'); }); cur=-1; } else { cur=-1; tick(); if(cur<0) setI(0); }
+    }
+    function tick(){ if(!wide) return; if(!g.classList.contains('sticky')){ setI(cur<0?0:cur); return; }
+      var r=g.getBoundingClientRect(), total=g.offsetHeight-innerHeight; var t=Math.max(0,Math.min(.999,-r.top/total)); setI(Math.floor(t*exs.length)); }
+    lis.forEach(function(l,k){ l.querySelector('button').addEventListener('click',function(){
+      if(!wide) return;
+      if(!g.classList.contains('sticky')){ setI(k); return; }
+      var total=g.offsetHeight-innerHeight; scrollTo({top:g.getBoundingClientRect().top+scrollY+total*(k+.5)/exs.length,behavior:'smooth'}); }); });
+    addEventListener('scroll',function(){ requestAnimationFrame(tick); },{passive:true});
+    addEventListener('resize',layout); layout(); if(wide && cur<0) setI(0);
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if(wide) exs.forEach(fade); });
+  })();
+
+  // карусель источников
+  (function(){
+    var r=document.getElementById('rail'), pv=document.getElementById('r-prev'), nx=document.getElementById('r-next');
+    function st(){ pv.disabled=r.scrollLeft<8; nx.disabled=r.scrollLeft+r.clientWidth>=r.scrollWidth-8; }
+    function step(d){ var sl=r.querySelector('.slide'); r.scrollBy({left:d*(sl.offsetWidth+24),behavior:reduce?'auto':'smooth'}); }
+    pv.addEventListener('click',function(){ step(-1); }); nx.addEventListener('click',function(){ step(1); });
+    r.addEventListener('keydown',function(e){ if(e.key==='ArrowRight'){step(1);e.preventDefault();} if(e.key==='ArrowLeft'){step(-1);e.preventDefault();} });
+    r.addEventListener('scroll',function(){ requestAnimationFrame(st); },{passive:true}); addEventListener('resize',st); st();
+  })();
+
+  // мягкое появление блоков
+  var fx=[].slice.call(document.querySelectorAll('.fx'));
+  if('IntersectionObserver' in window && !reduce){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{rootMargin:'0px 0px -12% 0px'});
+    fx.forEach(function(el){ io.observe(el); });
+  } else fx.forEach(function(el){ el.classList.add('in'); });
+
+  // плавающая панель с ценой: после героя, прячется у формы
+  // и не мешает прилипающему экрану с записью: его последний шаг стоит внизу экрана
+  var bar=document.getElementById('bar'), heroOut=false, applyIn=false, revealIn=false, cmpIn=false;
+  function syncBar(){ var on=heroOut&&!applyIn&&!revealIn&&!cmpIn; bar.classList.toggle('show',on); bar.setAttribute('aria-hidden',on?'false':'true'); bar.querySelector('a').tabIndex=on?0:-1; document.documentElement.classList.toggle('bar-on',on); }
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ heroOut=!es[0].isIntersecting; syncBar(); }).observe(document.getElementById('hero'));
+    new IntersectionObserver(function(es){ revealIn=es[0].isIntersecting && getComputedStyle(sec.querySelector('.stage')).position==='sticky'; syncBar(); }).observe(sec);
+    new IntersectionObserver(function(es){ applyIn=es[0].isIntersecting; syncBar(); },{rootMargin:'0px 0px -20% 0px'}).observe(document.getElementById('apply'));
+    var cmpEl=document.querySelector('.cmp3'); if(cmpEl) new IntersectionObserver(function(es){ cmpIn=es[0].isIntersecting; syncBar(); },{rootMargin:'-30% 0px -30% 0px'}).observe(cmpEl);
+  }
+
+  // кнопки тарифов подставляют тариф и источник
+  var sel=document.getElementById('f-tariff'), src=document.getElementById('f-source');
+  var posterOpt=document.querySelector('.poster-opt'); function syncPoster(){ if(posterOpt) posterOpt.hidden=sel.value!=='Подарочный'; } sel.addEventListener('change',syncPoster); setInterval(syncPoster,500); syncPoster();
+  function goal(name){ try{ if(window.ym && window.YM_ID) ym(window.YM_ID,'reachGoal',name); }catch(e){} }
+  document.querySelectorAll('[data-source]').forEach(function(el){
+    el.addEventListener('click',function(e){
+      if(el.dataset.tariff) sel.value=el.dataset.tariff;
+      if(el.dataset.whom==='gift') document.getElementById('f-gift').checked=true;
+      src.value=el.dataset.source;
+      goal('open_form');
+      if(el.tagName==='BUTTON'){ e.preventDefault(); document.getElementById('apply').scrollIntoView({behavior:'smooth'}); }
+      setTimeout(function(){ document.getElementById('f-name').focus({preventScroll:true}); },500);
+    });
+  });
+
+  // отправка в Formspree без перезагрузки
+  var form=document.getElementById('lead'), msg=document.getElementById('f-msg'), btn=document.getElementById('f-submit');
+  function show(t,ok){ msg.hidden=false; msg.className='form-msg '+(ok?'good':'bad'); msg.textContent=t; }
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var name=form['f-name'].value.trim(), contact=form['f-contact'].value.trim();
+    if(!name||!contact){ show('Укажите имя и контакт, чтобы мы могли связаться.',false); return; }
+    if(!document.getElementById('f-consent').checked){ show('Отметьте согласие на обработку персональных данных.',false); return; }
+    btn.disabled=true; btn.textContent='Отправляем…';
+    fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}})
+      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(){ form.reset(); show('Заявка принята. Свяжемся в течение дня, оценим анкету и расскажем, что можно найти.',true); goal('send_form'); })
+      .catch(function(){ show('Не получилось отправить. Проверьте интернет и попробуйте ещё раз.',false); })
+      .finally(function(){ btn.disabled=false; btn.textContent='Отправить заявку'; });
+  });
+})();
+</script>
+<!-- Яндекс Метрика: вставить счётчик и задать window.YM_ID, цели open_form и send_form -->
+</body>
+</html>
